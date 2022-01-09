@@ -1,7 +1,7 @@
 module.exports = class FileUploaderUseCaseSpy {
   async execute({ name, path }) {
     this.name = name;
-    this.password = path;
+    this.path = path;
     return this.file;
   }
 };

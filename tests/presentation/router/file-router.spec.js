@@ -10,6 +10,44 @@ const {
 } = require('../helpers/constants');
 
 describe('File Router', () => {
+  it('Should call FileUploaderUseCase with correct values', async () => {
+    const { sut, fileUploaderUseCaseSpy } = new SutFactory().create();
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    fileUploaderUseCaseSpy.file = {
+      originalname: fakeOriginalname,
+      filename: fakeFilename,
+    };
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    await sut.route(httpRequest);
+    expect(fileUploaderUseCaseSpy.name).toBe(fakeOriginalname);
+    expect(fileUploaderUseCaseSpy.path).toBe(fakeFilename);
+  });
+
+  it('Should return 201 when valid credentials are provided', async () => {
+    const { sut, fileUploaderUseCaseSpy } = new SutFactory().create();
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    fileUploaderUseCaseSpy.file = {
+      originalname: fakeOriginalname,
+      filename: fakeFilename,
+    };
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toEqual(fileUploaderUseCaseSpy.file);
+  });
+
   it('Should return 400 if no originalname is provided', async () => {
     const { sut } = new SutFactory().create();
     const fakeFilename = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
@@ -34,25 +72,6 @@ describe('File Router', () => {
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('filename'));
-  });
-
-  it('Should return 201 when valid credentials are provided', async () => {
-    const { sut, fileUploaderUseCaseSpy } = new SutFactory().create();
-    const fakeOriginalname = `${faker.random.word()}.jpg`;
-    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
-    fileUploaderUseCaseSpy.file = {
-      originalname: fakeOriginalname,
-      filename: fakeFilename,
-    };
-    const httpRequest = {
-      file: {
-        originalname: fakeOriginalname,
-        filename: fakeFilename,
-      },
-    };
-    const httpResponse = await sut.route(httpRequest);
-    expect(httpResponse.statusCode).toBe(201);
-    expect(httpResponse.body).toEqual(fileUploaderUseCaseSpy.file);
   });
 
   it('Should return 500 when FileUploaderUseCase calls crashes', async () => {
