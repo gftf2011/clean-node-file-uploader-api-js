@@ -7,6 +7,8 @@ module.exports = class FileRouter {
         const { originalname, filename } = httpRequest.file;
         if (!originalname) {
             return HttpResponse.badRequest(new MissingParamError('originalname'));
+        } else if (!filename) {
+            return HttpResponse.badRequest(new MissingParamError('filename'));
         }
     }
 }
