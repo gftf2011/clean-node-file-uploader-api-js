@@ -25,4 +25,20 @@ describe('File Router', () => {
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('filename'));
   });
+  it('Should return 201 when valid credentials are provided', async () => {
+    const { sut, fileUploaderUseCaseSpy } = new SutFactory().create();
+    fileUploaderUseCaseSpy.file = {
+      originalname: 'any_originalname',
+      filename: 'any_filename',
+    };
+    const httpRequest = {
+      file: {
+        originalname: 'any_originalname',
+        filename: 'any_filename',
+      },
+    };
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toEqual(fileUploaderUseCaseSpy.file);
+  });
 });
