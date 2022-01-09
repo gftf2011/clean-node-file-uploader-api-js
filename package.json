@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --clearCache ; jest --colors --noStackTrace --passWithNoTests --runInBand",
+    "test:staged": "jest --clearCache ; jest --silent --passWithNoTests --findRelatedTests --verbose --colors --runInBand",
     "commit": "cz"
   },
   "repository": {
