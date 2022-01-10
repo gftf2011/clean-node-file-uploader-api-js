@@ -2,6 +2,8 @@ const faker = require('faker');
 
 const SutFactory = require('../helpers/factory-methods/file-router-sut-factory');
 
+const FileRouter = require('../../../src/presentation/routers/file-router');
+
 const MissingParamError = require('../../../src/utils/errors/missing-param-error');
 const ServerError = require('../../../src/utils/errors/server-error');
 
@@ -93,6 +95,21 @@ describe('File Router', () => {
     const httpResponse = await sut.route(httpRequest);
     expect(spyFileUploaderUseCase).toHaveBeenCalled();
     expect(spyFileUploaderUseCase).toHaveBeenCalledTimes(1);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  it('Should return 500 if no dependency is provided', async () => {
+    const sut = new FileRouter();
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
