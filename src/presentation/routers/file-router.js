@@ -4,11 +4,10 @@ const ServerError = require('../../utils/errors/server-error');
 const HttpResponse = require('../helpers/protocols/http-response');
 
 module.exports = class FileRouter {
-  constructor({ fileUploaderUseCase } = {}) {
-    this.fileUploaderUseCase = fileUploaderUseCase;
+  constructor({ fileRecordUseCase } = {}) {
+    this.fileRecordUseCase = fileRecordUseCase;
   }
 
-  // eslint-disable-next-line consistent-return
   async route(httpRequest) {
     try {
       const { originalname, filename } = httpRequest.file;
@@ -18,7 +17,7 @@ module.exports = class FileRouter {
       if (!filename) {
         return HttpResponse.badRequest(new MissingParamError('filename'));
       }
-      const file = await this.fileUploaderUseCase.execute({
+      const file = await this.fileRecordUseCase.execute({
         name: originalname,
         path: filename,
       });

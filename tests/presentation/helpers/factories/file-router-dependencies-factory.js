@@ -1,10 +1,10 @@
-const FileUploaderUseCaseSpyFactory = require('./spies/file-uploader-use-case-spy-factory');
+const FileRecordUseCaseSpyFactory = require('./spies/file-record-use-case-spy-factory');
 
 module.exports = class DependenciesFactory {
   create() {
-    this.fileUploaderUseCaseSpy = new FileUploaderUseCaseSpyFactory().create();
+    this.fileRecordUseCaseSpy = new FileRecordUseCaseSpyFactory().create();
     return {
-      fileUploaderUseCaseSpy: this.fileUploaderUseCaseSpy,
+      fileRecordUseCaseSpy: this.fileRecordUseCaseSpy,
     };
   }
 };

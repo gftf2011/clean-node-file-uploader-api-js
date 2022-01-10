@@ -8,15 +8,15 @@ const MissingParamError = require('../../../src/utils/errors/missing-param-error
 const ServerError = require('../../../src/utils/errors/server-error');
 
 const {
-  FILE_ROUTER_SUT_FILE_UPLOADER_USE_CASE_THROWING_ERROR,
+  FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_ERROR,
 } = require('../helpers/constants');
 
 describe('File Router', () => {
-  it('Should call FileUploaderUseCase with correct values', async () => {
-    const { sut, fileUploaderUseCaseSpy } = new SutFactory().create();
+  it('Should call FileRecordUseCase with correct values', async () => {
+    const { sut, fileRecordUseCaseSpy } = new SutFactory().create();
     const fakeOriginalname = `${faker.random.word()}.jpg`;
     const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
-    fileUploaderUseCaseSpy.file = {
+    fileRecordUseCaseSpy.file = {
       originalname: fakeOriginalname,
       filename: fakeFilename,
     };
@@ -27,15 +27,15 @@ describe('File Router', () => {
       },
     };
     await sut.route(httpRequest);
-    expect(fileUploaderUseCaseSpy.name).toBe(fakeOriginalname);
-    expect(fileUploaderUseCaseSpy.path).toBe(fakeFilename);
+    expect(fileRecordUseCaseSpy.name).toBe(fakeOriginalname);
+    expect(fileRecordUseCaseSpy.path).toBe(fakeFilename);
   });
 
   it('Should return 201 when valid credentials are provided', async () => {
-    const { sut, fileUploaderUseCaseSpy } = new SutFactory().create();
+    const { sut, fileRecordUseCaseSpy } = new SutFactory().create();
     const fakeOriginalname = `${faker.random.word()}.jpg`;
     const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
-    fileUploaderUseCaseSpy.file = {
+    fileRecordUseCaseSpy.file = {
       originalname: fakeOriginalname,
       filename: fakeFilename,
     };
@@ -47,7 +47,7 @@ describe('File Router', () => {
     };
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(201);
-    expect(httpResponse.body).toEqual(fileUploaderUseCaseSpy.file);
+    expect(httpResponse.body).toEqual(fileRecordUseCaseSpy.file);
   });
 
   it('Should return 400 if no originalname is provided', async () => {
@@ -77,8 +77,8 @@ describe('File Router', () => {
   });
 
   it('Should return 500 when FileUploaderUseCase calls crashes', async () => {
-    const { sut, fileUploaderUseCaseSpy } = new SutFactory().create(
-      FILE_ROUTER_SUT_FILE_UPLOADER_USE_CASE_THROWING_ERROR,
+    const { sut, fileRecordUseCaseSpy } = new SutFactory().create(
+      FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_ERROR,
     );
     const fakeOriginalname = `${faker.random.word()}.jpg`;
     const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
@@ -88,13 +88,10 @@ describe('File Router', () => {
         filename: fakeFilename,
       },
     };
-    const spyFileUploaderUseCase = jest.spyOn(
-      fileUploaderUseCaseSpy,
-      'execute',
-    );
+    const spyFileRecordUseCase = jest.spyOn(fileRecordUseCaseSpy, 'execute');
     const httpResponse = await sut.route(httpRequest);
-    expect(spyFileUploaderUseCase).toHaveBeenCalled();
-    expect(spyFileUploaderUseCase).toHaveBeenCalledTimes(1);
+    expect(spyFileRecordUseCase).toHaveBeenCalled();
+    expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
@@ -129,7 +126,7 @@ describe('File Router', () => {
     expect(httpResponse.body).toEqual(new ServerError());
   });
 
-  it('Should return 500 if FileUploaderUseCase has no execute method', async () => {
+  it('Should return 500 if FileRecordUseCase has no execute method', async () => {
     const sut = new FileRouter({ fileUploaderUseCase: {} });
     const fakeOriginalname = `${faker.random.word()}.jpg`;
     const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
