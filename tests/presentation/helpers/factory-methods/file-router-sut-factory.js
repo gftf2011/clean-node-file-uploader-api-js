@@ -20,6 +20,7 @@ module.exports = class SutFactory {
 
     this.sut = new FileRouter({
       fileRecordUseCase: this.dependencies.fileRecordUseCaseSpy,
+      fileDeleteUseCase: this.dependencies.fileDeleteUseCaseSpy,
     });
 
     return {
