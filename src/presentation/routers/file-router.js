@@ -1,11 +1,13 @@
+const FileDeleteError = require('../../utils/errors/file-delete-error');
 const MissingParamError = require('../../utils/errors/missing-param-error');
 const ServerError = require('../../utils/errors/server-error');
 
 const HttpResponse = require('../helpers/protocols/http-response');
 
 module.exports = class FileRouter {
-  constructor({ fileRecordUseCase } = {}) {
+  constructor({ fileRecordUseCase, fileDeleteUseCase } = {}) {
     this.fileRecordUseCase = fileRecordUseCase;
+    this.fileDeleteUseCase = fileDeleteUseCase;
   }
 
   async route(httpRequest) {
@@ -21,6 +23,16 @@ module.exports = class FileRouter {
         name: originalname,
         path: filename,
       });
+      if (!file) {
+        const fileDeleted = await this.fileDeleteUseCase.execute({
+          path: filename,
+        });
+        return fileDeleted
+          ? HttpResponse.serverError(new ServerError())
+          : HttpResponse.serverError(
+              new FileDeleteError(httpRequest.file.filename),
+            );
+      }
       return HttpResponse.created(file);
     } catch (err) {
       return HttpResponse.serverError(new ServerError());
