@@ -10,6 +10,7 @@ const FileDeleteError = require('../../../src/utils/errors/file-delete-error');
 
 const {
   FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_ERROR,
+  FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_ERROR,
 } = require('../helpers/constants');
 
 describe('File Router', () => {
@@ -205,6 +206,31 @@ describe('File Router', () => {
     expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
     expect(spyFileDeleteUseCase).not.toHaveBeenCalled();
     expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(0);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  it('Should return 500 if FileDeleteUseCase calls crashes', async () => {
+    const { sut, fileRecordUseCaseSpy, fileDeleteUseCaseSpy } =
+      new SutFactory().create(
+        FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_ERROR,
+      );
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    fileRecordUseCaseSpy.file = null;
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    const spyFileRecordUseCase = jest.spyOn(fileRecordUseCaseSpy, 'execute');
+    const spyFileDeleteUseCase = jest.spyOn(fileDeleteUseCaseSpy, 'execute');
+    const httpResponse = await sut.route(httpRequest);
+    expect(spyFileRecordUseCase).toHaveBeenCalled();
+    expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
+    expect(spyFileDeleteUseCase).toHaveBeenCalled();
+    expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(1);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
