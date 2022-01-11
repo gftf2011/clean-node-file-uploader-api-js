@@ -6,6 +6,7 @@ const FileRouter = require('../../../src/presentation/routers/file-router');
 
 const MissingParamError = require('../../../src/utils/errors/missing-param-error');
 const ServerError = require('../../../src/utils/errors/server-error');
+const FileDeleteError = require('../../../src/utils/errors/file-delete-error');
 
 const {
   FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_ERROR,
@@ -112,30 +113,6 @@ describe('File Router', () => {
     expect(httpResponse.body).toEqual(new ServerError());
   });
 
-  it('Should return 500 when FileRecordUseCase returns null', async () => {
-    const { sut, fileRecordUseCaseSpy, fileDeleteUseCaseSpy } =
-      new SutFactory().create();
-    fileRecordUseCaseSpy.file = null;
-    fileDeleteUseCaseSpy.deletedFile = true;
-    const fakeOriginalname = `${faker.random.word()}.jpg`;
-    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
-    const httpRequest = {
-      file: {
-        originalname: fakeOriginalname,
-        filename: fakeFilename,
-      },
-    };
-    const spyFileRecordUseCase = jest.spyOn(fileRecordUseCaseSpy, 'execute');
-    const spyFileDeleteUseCase = jest.spyOn(fileDeleteUseCaseSpy, 'execute');
-    const httpResponse = await sut.route(httpRequest);
-    expect(spyFileRecordUseCase).toHaveBeenCalled();
-    expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
-    expect(spyFileDeleteUseCase).toHaveBeenCalled();
-    expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(1);
-    expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new ServerError());
-  });
-
   it('Should return 500 if no dependency is provided', async () => {
     const sut = new FileRouter();
     const fakeOriginalname = `${faker.random.word()}.jpg`;
@@ -230,5 +207,53 @@ describe('File Router', () => {
     expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(0);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  it('Should return ServerError when FileDeleteUseCase returns true', async () => {
+    const { sut, fileRecordUseCaseSpy, fileDeleteUseCaseSpy } =
+      new SutFactory().create();
+    fileRecordUseCaseSpy.file = null;
+    fileDeleteUseCaseSpy.deletedFile = true;
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    const spyFileRecordUseCase = jest.spyOn(fileRecordUseCaseSpy, 'execute');
+    const spyFileDeleteUseCase = jest.spyOn(fileDeleteUseCaseSpy, 'execute');
+    const httpResponse = await sut.route(httpRequest);
+    expect(spyFileRecordUseCase).toHaveBeenCalled();
+    expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
+    expect(spyFileDeleteUseCase).toHaveBeenCalled();
+    expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(1);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  it('Should return FileDeleteError if FileDeleteUseCase returns false', async () => {
+    const { sut, fileRecordUseCaseSpy, fileDeleteUseCaseSpy } =
+      new SutFactory().create();
+    fileRecordUseCaseSpy.file = null;
+    fileDeleteUseCaseSpy.deletedFile = false;
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    const spyFileRecordUseCase = jest.spyOn(fileRecordUseCaseSpy, 'execute');
+    const spyFileDeleteUseCase = jest.spyOn(fileDeleteUseCaseSpy, 'execute');
+    const httpResponse = await sut.route(httpRequest);
+    expect(spyFileRecordUseCase).toHaveBeenCalled();
+    expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
+    expect(spyFileDeleteUseCase).toHaveBeenCalled();
+    expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(1);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new FileDeleteError(fakeFilename));
   });
 });

@@ -29,9 +29,7 @@ module.exports = class FileRouter {
         });
         return fileDeleted
           ? HttpResponse.serverError(new ServerError())
-          : HttpResponse.serverError(
-              new FileDeleteError(httpRequest.file.filename),
-            );
+          : HttpResponse.serverError(new FileDeleteError(filename));
       }
       return HttpResponse.created(file);
     } catch (err) {
