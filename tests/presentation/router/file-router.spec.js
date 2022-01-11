@@ -31,6 +31,22 @@ describe('File Router', () => {
     expect(fileRecordUseCaseSpy.path).toBe(fakeFilename);
   });
 
+  it('Should call FileDeleteUseCase with correct values', async () => {
+    const { sut, fileRecordUseCaseSpy, fileDeleteUseCaseSpy } =
+      new SutFactory().create();
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    fileRecordUseCaseSpy.file = null;
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    await sut.route(httpRequest);
+    expect(fileDeleteUseCaseSpy.path).toBe(fakeFilename);
+  });
+
   it('Should return 201 when valid credentials are provided', async () => {
     const { sut, fileRecordUseCaseSpy } = new SutFactory().create();
     const fakeOriginalname = `${faker.random.word()}.jpg`;
