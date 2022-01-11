@@ -164,4 +164,28 @@ describe('File Router', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
+
+  it('Should return 500 if FileDeleteUseCase was not provided', async () => {
+    const { fileRecordUseCaseSpy, fileDeleteUseCaseSpy } =
+      new SutFactory().create();
+    const sut = new FileRouter({ fileRecordUseCase: fileRecordUseCaseSpy });
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    fileRecordUseCaseSpy.file = null;
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    const spyFileRecordUseCase = jest.spyOn(fileRecordUseCaseSpy, 'execute');
+    const spyFileDeleteUseCase = jest.spyOn(fileDeleteUseCaseSpy, 'execute');
+    const httpResponse = await sut.route(httpRequest);
+    expect(spyFileRecordUseCase).toHaveBeenCalled();
+    expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
+    expect(spyFileDeleteUseCase).not.toHaveBeenCalled();
+    expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(0);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
 });
