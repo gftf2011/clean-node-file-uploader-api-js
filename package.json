@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --clearCache ; jest --colors --noStackTrace --passWithNoTests --runInBand",
+    "test": "jest --clearCache ; jest --colors --verbose --passWithNoTests --runInBand",
     "test:staged": "jest --clearCache ; jest --silent --passWithNoTests --findRelatedTests --verbose --colors --runInBand",
     "commit": "cz"
   },

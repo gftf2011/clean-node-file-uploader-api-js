@@ -1,6 +1,6 @@
-module.exports = class ServerError {
+module.exports = class ServerError extends Error {
   constructor() {
-    this.message = 'Server is not responding';
+    super('Server is not responding');
     this.name = 'ServerError';
   }
 };
