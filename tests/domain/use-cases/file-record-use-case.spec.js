@@ -8,6 +8,7 @@ const SutFactory = require('../helpers/factory-methods/file-record-use-case-sut-
 const {
   FILE_RECORD_USE_CASE_WITH_NO_DEPENDENCY,
   FILE_RECORD_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
+  FILE_RECORD_USE_CASE_HAS_INSERT_FILE_REPOSITORY_WITH_NO_INSERT,
 } = require('../helpers/constants');
 
 describe('FileRecord UseCase', () => {
@@ -58,6 +59,16 @@ describe('FileRecord UseCase', () => {
   it('Should return ServerError when dependency is an empty object', async () => {
     const { sut } = new SutFactory().create(
       FILE_RECORD_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
+    );
+    const fakeName = `${faker.random.word()}.jpg`;
+    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const promise = sut.execute({ name: fakeName, path: fakePath });
+    await expect(promise).rejects.toThrow(new ServerError());
+  });
+
+  it('Should return ServerError when InserFileRepository has no method', async () => {
+    const { sut } = new SutFactory().create(
+      FILE_RECORD_USE_CASE_HAS_INSERT_FILE_REPOSITORY_WITH_NO_INSERT,
     );
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
