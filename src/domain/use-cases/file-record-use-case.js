@@ -1,3 +1,4 @@
+const ServerError = require('../../utils/errors/server-error');
 const MissingParamError = require('../../utils/errors/missing-param-error');
 
 module.exports = class FileRecordUseCase {
@@ -6,7 +7,9 @@ module.exports = class FileRecordUseCase {
   }
 
   async execute({ name, path }) {
-    if (!name) {
+    if (!this.insertFileRepository || !this.insertFileRepository.insert) {
+      throw new ServerError();
+    } else if (!name) {
       throw new MissingParamError('name');
     } else if (!path) {
       throw new MissingParamError('path');
