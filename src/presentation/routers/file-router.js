@@ -33,6 +33,9 @@ module.exports = class FileRouter {
       }
       return HttpResponse.created(file);
     } catch (err) {
+      if (err instanceof MissingParamError) {
+        return HttpResponse.badRequest(err);
+      }
       return HttpResponse.serverError(new ServerError());
     }
   }
