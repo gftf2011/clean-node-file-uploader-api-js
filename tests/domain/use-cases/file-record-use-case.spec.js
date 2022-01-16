@@ -9,6 +9,7 @@ const {
   FILE_RECORD_USE_CASE_WITH_NO_DEPENDENCY,
   FILE_RECORD_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   FILE_RECORD_USE_CASE_HAS_INSERT_FILE_REPOSITORY_WITH_NO_INSERT,
+  FILE_RECORD_USE_CASE_SUT_INSERT_FILE_REPOSITORY_THROWING_ERROR,
 } = require('../helpers/constants');
 
 describe('FileRecord UseCase', () => {
@@ -74,5 +75,20 @@ describe('FileRecord UseCase', () => {
     const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
     const promise = sut.execute({ name: fakeName, path: fakePath });
     await expect(promise).rejects.toThrow(new ServerError());
+  });
+
+  it('Should return null when InserFileRepository throws error', async () => {
+    const { sut, insertFileRepositorySpy } = new SutFactory().create(
+      FILE_RECORD_USE_CASE_SUT_INSERT_FILE_REPOSITORY_THROWING_ERROR,
+    );
+    const fakeName = `${faker.random.word()}.jpg`;
+    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const spyInsertFileRepository = jest.spyOn(
+      insertFileRepositorySpy,
+      'insert',
+    );
+    const response = await sut.execute({ name: fakeName, path: fakePath });
+    expect(spyInsertFileRepository).toHaveBeenCalledTimes(1);
+    expect(response).toBeNull();
   });
 });
