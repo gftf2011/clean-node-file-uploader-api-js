@@ -5,6 +5,7 @@ const DependenciesFactory = require('../factories/file-record-use-case-dependenc
 const {
   FILE_RECORD_USE_CASE_WITH_NO_DEPENDENCY,
   FILE_RECORD_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
+  FILE_RECORD_USE_CASE_HAS_INSERT_FILE_REPOSITORY_WITH_NO_INSERT,
 } = require('../constants');
 
 module.exports = class SutFactory {
@@ -15,6 +16,12 @@ module.exports = class SutFactory {
       this.sut = new FileRecordUseCase();
     } else if (type === FILE_RECORD_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY) {
       this.sut = new FileRecordUseCase({});
+    } else if (
+      type === FILE_RECORD_USE_CASE_HAS_INSERT_FILE_REPOSITORY_WITH_NO_INSERT
+    ) {
+      this.sut = new FileRecordUseCase({
+        insertFileRepository: {},
+      });
     } else {
       this.sut = new FileRecordUseCase({
         insertFileRepository: this.dependencies.insertFileRepositorySpy,
