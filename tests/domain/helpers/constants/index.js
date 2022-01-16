@@ -1,0 +1,10 @@
+/**
+ * File Record Use Case
+ */
+const FILE_RECORD_USE_CASE_WITH_NO_DEPENDENCY = Symbol(
+  'FILE_RECORD_USE_CASE_WITH_NO_DEPENDENCY',
+);
+
+module.exports = {
+  FILE_RECORD_USE_CASE_WITH_NO_DEPENDENCY,
+};
