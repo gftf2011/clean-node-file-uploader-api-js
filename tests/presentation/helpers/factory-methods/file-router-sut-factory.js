@@ -1,5 +1,6 @@
 const ServerError = require('../../../../src/utils/errors/server-error');
 const MissingParamError = require('../../../../src/utils/errors/missing-param-error');
+const FileNotFoundError = require('../../../../src/utils/errors/file-not-found-error');
 
 const FileRouter = require('../../../../src/presentation/routers/file-router');
 
@@ -9,6 +10,7 @@ const {
   FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_ERROR,
   FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_ERROR,
   FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_MISSING_PARAM_ERROR,
+  FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_FILE_NOT_FOUND_ERROR,
 } = require('../constants');
 
 module.exports = class SutFactory {
@@ -28,6 +30,13 @@ module.exports = class SutFactory {
     ) {
       this.dependencies.fileRecordUseCaseSpy.execute = ({ _path }) => {
         return Promise.reject(new MissingParamError('name'));
+      };
+    } else if (
+      type ===
+      FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_FILE_NOT_FOUND_ERROR
+    ) {
+      this.dependencies.fileDeleteUseCaseSpy.execute = ({ path }) => {
+        return Promise.reject(new FileNotFoundError(path));
       };
     }
 
