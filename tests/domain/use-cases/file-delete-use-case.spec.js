@@ -7,6 +7,7 @@ const SutFactory = require('../helpers/factory-methods/file-delete-use-case-sut-
 
 const {
   FILE_DELETE_USE_CASE_WITH_NO_DEPENDENCY,
+  FILE_DELETE_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
 } = require('../helpers/constants');
 
 describe('FileDelete UseCase', () => {
@@ -38,7 +39,17 @@ describe('FileDelete UseCase', () => {
     const { sut } = new SutFactory().create(
       FILE_DELETE_USE_CASE_WITH_NO_DEPENDENCY,
     );
-    const promise = sut.execute({});
+    const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
+    const promise = sut.execute({ path: fakePath });
+    await expect(promise).rejects.toThrow(new ServerError());
+  });
+
+  it('Should return ServerError if dependency is an empty object', async () => {
+    const { sut } = new SutFactory().create(
+      FILE_DELETE_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
+    );
+    const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
+    const promise = sut.execute({ path: fakePath });
     await expect(promise).rejects.toThrow(new ServerError());
   });
 });
