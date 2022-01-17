@@ -1,8 +1,13 @@
 const faker = require('faker');
 
+const ServerError = require('../../../src/utils/errors/server-error');
 const MissingParamError = require('../../../src/utils/errors/missing-param-error');
 
 const SutFactory = require('../helpers/factory-methods/file-delete-use-case-sut-factory');
+
+const {
+  FILE_DELETE_USE_CASE_WITH_NO_DEPENDENCY,
+} = require('../helpers/constants');
 
 describe('FileDelete UseCase', () => {
   it('Should call fileDeleteAdapter when path is provided', async () => {
@@ -27,5 +32,13 @@ describe('FileDelete UseCase', () => {
     const { sut } = new SutFactory().create();
     const promise = sut.execute({});
     await expect(promise).rejects.toThrow(new MissingParamError('path'));
+  });
+
+  it('Should return ServerError if no dependency is provided', async () => {
+    const { sut } = new SutFactory().create(
+      FILE_DELETE_USE_CASE_WITH_NO_DEPENDENCY,
+    );
+    const promise = sut.execute({});
+    await expect(promise).rejects.toThrow(new ServerError());
   });
 });
