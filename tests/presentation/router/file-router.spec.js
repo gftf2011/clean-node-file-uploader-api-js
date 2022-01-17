@@ -7,11 +7,13 @@ const FileRouter = require('../../../src/presentation/routers/file-router');
 const MissingParamError = require('../../../src/utils/errors/missing-param-error');
 const ServerError = require('../../../src/utils/errors/server-error');
 const FileDeleteError = require('../../../src/utils/errors/file-delete-error');
+const FileNotFoundError = require('../../../src/utils/errors/file-not-found-error');
 
 const {
   FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_ERROR,
   FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_ERROR,
   FILE_ROUTER_SUT_FILE_RECORD_USE_CASE_THROWING_MISSING_PARAM_ERROR,
+  FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_FILE_NOT_FOUND_ERROR,
 } = require('../helpers/constants');
 
 describe('File Router', () => {
@@ -117,6 +119,30 @@ describe('File Router', () => {
     expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(0);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('name'));
+  });
+
+  it('Should return 404 if FileDeleteUseCase does not find file', async () => {
+    const { sut, fileRecordUseCaseSpy, fileDeleteUseCaseSpy } =
+      new SutFactory().create(
+        FILE_ROUTER_SUT_FILE_DELETE_USE_CASE_THROWING_FILE_NOT_FOUND_ERROR,
+      );
+    const fakeOriginalname = `${faker.random.word()}.jpg`;
+    const fakeFilename = `${faker.image.imageUrl()}/${fakeOriginalname}`;
+    const httpRequest = {
+      file: {
+        originalname: fakeOriginalname,
+        filename: fakeFilename,
+      },
+    };
+    const spyFileRecordUseCase = jest.spyOn(fileRecordUseCaseSpy, 'execute');
+    const spyFileDeleteUseCase = jest.spyOn(fileDeleteUseCaseSpy, 'execute');
+    const httpResponse = await sut.route(httpRequest);
+    expect(spyFileRecordUseCase).toHaveBeenCalled();
+    expect(spyFileRecordUseCase).toHaveBeenCalledTimes(1);
+    expect(spyFileDeleteUseCase).toHaveBeenCalled();
+    expect(spyFileDeleteUseCase).toHaveBeenCalledTimes(1);
+    expect(httpResponse.statusCode).toBe(404);
+    expect(httpResponse.body).toEqual(new FileNotFoundError(fakeFilename));
   });
 
   it('Should return 500 when FileUploaderUseCase calls crashes', async () => {
