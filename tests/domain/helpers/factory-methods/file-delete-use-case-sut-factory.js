@@ -2,13 +2,19 @@ const FileDeleteUseCase = require('../../../../src/domain/use-cases/file-delete-
 
 const DependenciesFactory = require('../factories/file-delete-use-case-dependencies-factory');
 
+const { FILE_DELETE_USE_CASE_WITH_NO_DEPENDENCY } = require('../constants');
+
 module.exports = class SutFactory {
-  create(_type) {
+  create(type) {
     this.dependencies = new DependenciesFactory().create();
 
-    this.sut = new FileDeleteUseCase({
-      fileDeleteAdapter: this.dependencies.fileDeleteAdapterSpy,
-    });
+    if (type === FILE_DELETE_USE_CASE_WITH_NO_DEPENDENCY) {
+      this.sut = new FileDeleteUseCase();
+    } else {
+      this.sut = new FileDeleteUseCase({
+        fileDeleteAdapter: this.dependencies.fileDeleteAdapterSpy,
+      });
+    }
 
     return {
       sut: this.sut,
