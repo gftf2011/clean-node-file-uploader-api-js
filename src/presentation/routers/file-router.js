@@ -1,4 +1,5 @@
 const FileDeleteError = require('../../utils/errors/file-delete-error');
+const FileNotFoundError = require('../../utils/errors/file-not-found-error');
 const MissingParamError = require('../../utils/errors/missing-param-error');
 const ServerError = require('../../utils/errors/server-error');
 
@@ -35,6 +36,9 @@ module.exports = class FileRouter {
     } catch (err) {
       if (err instanceof MissingParamError) {
         return HttpResponse.badRequest(err);
+      }
+      if (err instanceof FileNotFoundError) {
+        return HttpResponse.notFound(err);
       }
       return HttpResponse.serverError(new ServerError());
     }

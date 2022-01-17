@@ -13,6 +13,13 @@ module.exports = class HttpResponse {
     };
   }
 
+  static notFound(error) {
+    return {
+      statusCode: 404,
+      body: error,
+    };
+  }
+
   static serverError(error) {
     return {
       statusCode: 500,
