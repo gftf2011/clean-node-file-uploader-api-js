@@ -16,6 +16,13 @@ describe('FileDelete UseCase', () => {
     expect(spyFileDeleteAdapter).toHaveBeenCalledTimes(1);
   });
 
+  it('Should call fileDeleteAdapter with correct values', async () => {
+    const { sut, fileDeleteAdapterSpy } = new SutFactory().create();
+    const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
+    await sut.execute({ path: fakePath });
+    expect(fileDeleteAdapterSpy.path).toBe(fakePath);
+  });
+
   it('Should return MissingParamError if path is not provided', async () => {
     const { sut } = new SutFactory().create();
     const promise = sut.execute({});
