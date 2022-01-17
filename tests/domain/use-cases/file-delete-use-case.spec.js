@@ -2,6 +2,7 @@ const faker = require('faker');
 
 const ServerError = require('../../../src/utils/errors/server-error');
 const MissingParamError = require('../../../src/utils/errors/missing-param-error');
+const FileNotFoundError = require('../../../src/utils/errors/file-not-found-error');
 
 const SutFactory = require('../helpers/factory-methods/file-delete-use-case-sut-factory');
 
@@ -9,6 +10,7 @@ const {
   FILE_DELETE_USE_CASE_WITH_NO_DEPENDENCY,
   FILE_DELETE_USE_CASE_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   FILE_DELETE_USE_CASE_HAS_FILE_DELETE_ADAPTER_WITH_NO_DELETE,
+  FILE_DELETE_USE_CASE_HAS_FILE_DELETE_ADAPTER_THROWING_FILE_NOT_FOUND_ERROR,
 } = require('../helpers/constants');
 
 describe('FileDelete UseCase', () => {
@@ -61,5 +63,14 @@ describe('FileDelete UseCase', () => {
     const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
     const promise = sut.execute({ path: fakePath });
     await expect(promise).rejects.toThrow(new ServerError());
+  });
+
+  it('Should return FileNotFoundError if path does not exist in storage', async () => {
+    const { sut } = new SutFactory().create(
+      FILE_DELETE_USE_CASE_HAS_FILE_DELETE_ADAPTER_THROWING_FILE_NOT_FOUND_ERROR,
+    );
+    const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
+    const promise = sut.execute({ path: fakePath });
+    await expect(promise).rejects.toThrow(new FileNotFoundError(fakePath));
   });
 });
