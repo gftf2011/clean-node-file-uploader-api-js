@@ -44,6 +44,19 @@ describe('InsertFile Repository', () => {
     expect(response).toEqual(insertFileDAOSpy.file);
   });
 
+  it('Should return null if InsertFileDAO could not commit transaction', async () => {
+    const { sut, insertFileDAOSpy } = new SutFactory().create();
+    const fakeName = `${faker.random.word()}.jpg`;
+    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    insertFileDAOSpy.file = null;
+    const request = {
+      name: fakeName,
+      path: fakePath,
+    };
+    const response = await sut.insert(request);
+    expect(response).toBeNull();
+  });
+
   it('Should return MissingParamError if name is not provided', async () => {
     const { sut } = new SutFactory().create();
     const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
