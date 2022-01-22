@@ -17,11 +17,14 @@ module.exports = class InsertFileDAO {
     const statement = `INSERT INTO files(name, path) VALUES($1, $2) RETURNING *`;
 
     try {
-      return await this.databaseDriverTemplateMethods.singleTransaction(
-        client,
-        statement,
-        values,
-      );
+      const response =
+        await this.databaseDriverTemplateMethods.singleTransaction(
+          client,
+          statement,
+          values,
+        );
+      await this.databaseDriverTemplateMethods.commit(client);
+      return response;
     } catch (_error) {
       await this.databaseDriverTemplateMethods.rollback(client);
       return null;

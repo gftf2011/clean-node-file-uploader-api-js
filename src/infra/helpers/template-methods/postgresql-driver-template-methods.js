@@ -21,8 +21,11 @@ module.exports = {
   async singleTransaction(client, statement, values) {
     await client.query('BEGIN');
     const response = await client.query(statement, values);
-    await client.query('COMMIT');
     return response.rows[0];
+  },
+
+  async commit(client) {
+    await client.query('COMMIT');
   },
 
   async rollback(client) {

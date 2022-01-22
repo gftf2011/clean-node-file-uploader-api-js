@@ -6,7 +6,7 @@ module.exports = class FileRecordUseCase {
     this.insertFileRepository = insertFileRepository;
   }
 
-  async execute({ name, path }) {
+  async execute({ name, path } = {}) {
     if (!this.insertFileRepository || !this.insertFileRepository.insert) {
       throw new ServerError();
     } else if (!name) {
