@@ -1,8 +1,8 @@
 const { DatabaseError } = require('pg');
 
 module.exports = class PostgresqlDatabaseError extends DatabaseError {
-  constructor(msg) {
-    super(msg);
+  constructor() {
+    super('Could not connect to postgreSQL client');
     this.name = 'PostgresqlDatabaseError';
   }
 };

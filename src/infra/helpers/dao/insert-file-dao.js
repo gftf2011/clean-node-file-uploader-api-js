@@ -9,9 +9,7 @@ module.exports = class InsertFileDAO {
     const client = await this.databaseDriverTemplateMethods.getClientConnect();
 
     if (!client) {
-      throw new PostgresqlDatabaseError(
-        'Could not connect to postgreSQL client',
-      );
+      throw new PostgresqlDatabaseError();
     }
 
     const statement = `INSERT INTO files(name, path) VALUES($1, $2) RETURNING *`;
