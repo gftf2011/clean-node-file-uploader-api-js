@@ -1,0 +1,10 @@
+/**
+ * Insert File Repository
+ */
+const INSERT_FILE_REPOSITORY_WITH_NO_DEPENDENCY = Symbol(
+  'INSERT_FILE_REPOSITORY_WITH_NO_DEPENDENCY',
+);
+
+module.exports = {
+  INSERT_FILE_REPOSITORY_WITH_NO_DEPENDENCY,
+};
