@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --clearCache ; jest --colors --verbose --passWithNoTests --runInBand",
     "test:staged": "jest --clearCache ; jest --silent --passWithNoTests --findRelatedTests --verbose --colors --runInBand",
+    "snyk:test": "npx snyk test",
     "commit": "cz"
   },
   "repository": {
@@ -38,7 +39,8 @@
     "husky": "^7.0.4",
     "jest": "^27.4.7",
     "lint-staged": "^12.1.7",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "snyk": "^1.834.0"
   },
   "config": {
     "commitizen": {
