@@ -14,4 +14,14 @@ describe('InsertFile Repository', () => {
     const promise = sut.insert(request);
     await expect(promise).rejects.toThrow(new MissingParamError('name'));
   });
+
+  it('Should return MissingParamError if path is not provided', async () => {
+    const { sut } = new SutFactory().create();
+    const fakeName = `${faker.random.word()}.jpg`;
+    const request = {
+      name: fakeName,
+    };
+    const promise = sut.insert(request);
+    await expect(promise).rejects.toThrow(new MissingParamError('path'));
+  });
 });

@@ -6,7 +6,7 @@ module.exports = class FileDeleteUseCase {
     this.fileDeleteAdapter = fileDeleteAdapter;
   }
 
-  async execute({ path }) {
+  async execute({ path } = {}) {
     if (!this.fileDeleteAdapter || !this.fileDeleteAdapter.delete) {
       throw new ServerError();
     } else if (!path) {
