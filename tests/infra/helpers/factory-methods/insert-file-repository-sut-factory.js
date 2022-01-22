@@ -5,6 +5,7 @@ const DependenciesFactory = require('../factories/insert-file-repository-depende
 const {
   INSERT_FILE_REPOSITORY_WITH_NO_DEPENDENCY,
   INSERT_FILE_REPOSITORY_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
+  INSERT_FILE_REPOSITORY_HAS_INSERT_FILE_DAO_WITH_NO_INSERT_SINGLE_FILE,
 } = require('../constants');
 
 module.exports = class SutFactory {
@@ -17,6 +18,13 @@ module.exports = class SutFactory {
       type === INSERT_FILE_REPOSITORY_WITH_EMPTY_OBJECT_AS_DEPENDENCY
     ) {
       this.sut = new InsertFileRepository({});
+    } else if (
+      type ===
+      INSERT_FILE_REPOSITORY_HAS_INSERT_FILE_DAO_WITH_NO_INSERT_SINGLE_FILE
+    ) {
+      this.sut = new InsertFileRepository({
+        insertFileDAO: {},
+      });
     } else {
       this.sut = new InsertFileRepository({
         insertFileDAO: this.dependencies.insertFileDAOSpy,
