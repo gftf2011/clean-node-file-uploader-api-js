@@ -14,6 +14,7 @@ module.exports = class InsertFileRepository {
     } else if (!this.insertFileDAO || !this.insertFileDAO.insertSingleFile) {
       throw new ServerError();
     }
-    this.insertFileDAO.insertSingleFile([name, path]);
+    const file = await this.insertFileDAO.insertSingleFile([name, path]);
+    return file;
   }
 };

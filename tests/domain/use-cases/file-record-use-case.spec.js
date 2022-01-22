@@ -23,9 +23,10 @@ describe('FileRecord UseCase', () => {
   });
 
   it('Should return file object with correct values', async () => {
-    const { sut } = new SutFactory().create();
+    const { sut, insertFileRepositorySpy } = new SutFactory().create();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    insertFileRepositorySpy.file = { name: fakeName, path: fakePath };
     const response = await sut.execute({ name: fakeName, path: fakePath });
     expect(response).toEqual({
       originalname: fakeName,

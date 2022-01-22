@@ -15,10 +15,10 @@ module.exports = class FileRecordUseCase {
       throw new MissingParamError('path');
     }
     try {
-      await this.insertFileRepository.insert({ name, path });
+      const response = await this.insertFileRepository.insert({ name, path });
       return {
-        originalname: name,
-        filename: path,
+        originalname: response.name,
+        filename: response.path,
       };
     } catch (_error) {
       return null;

@@ -28,6 +28,22 @@ describe('InsertFile Repository', () => {
     expect(insertFileDAOSpy.values).toEqual([fakeName, fakePath]);
   });
 
+  it('Should return file with correct values', async () => {
+    const { sut, insertFileDAOSpy } = new SutFactory().create();
+    const fakeName = `${faker.random.word()}.jpg`;
+    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    insertFileDAOSpy.file = {
+      name: fakeName,
+      path: fakePath,
+    };
+    const request = {
+      name: fakeName,
+      path: fakePath,
+    };
+    const response = await sut.insert(request);
+    expect(response).toEqual(insertFileDAOSpy.file);
+  });
+
   it('Should return MissingParamError if name is not provided', async () => {
     const { sut } = new SutFactory().create();
     const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
