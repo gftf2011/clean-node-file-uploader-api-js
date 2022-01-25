@@ -2,4 +2,9 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run snyk:test
+npm run build:test
+npm run build:docker:test
+npm run docker:up
 npx lint-staged
+npm run docker:down
+npm run docker:delete:volumes
