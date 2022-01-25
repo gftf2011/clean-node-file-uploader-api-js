@@ -71,8 +71,42 @@ describe('PostgreSQL Driver', () => {
     expect(spyDisconnect).toHaveBeenCalledTimes(1);
   });
 
+  it('Should create client after connection', async () => {
+    PostgresqlPoolSingleton.mockImplementation(() => {
+      return {
+        getInstance: (_host, _database, _user, _password, _port, _max) => {
+          return {
+            connect: jest.fn().mockImplementation(() => ({})),
+          };
+        },
+      };
+    });
+    const fakeIp = faker.internet.ip();
+    const fakePort = faker.internet.port();
+    const fakeHost = `${fakeIp}:${fakePort}`;
+    const fakeUser = faker.lorem.word(30);
+    const fakeDb = faker.lorem.word(30);
+    const fakePassword = faker.internet.password(64, false);
+    const fakeMax = faker.datatype.number();
+    PostgresqlDriverTemplateMethods.connect({
+      host: fakeHost,
+      database: fakeDb,
+      user: fakeUser,
+      password: fakePassword,
+      port: fakePort,
+      max: fakeMax,
+    });
+    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
+    const spyClientConnect = jest.spyOn(
+      PostgresqlDriverTemplateMethods.pool,
+      'connect',
+    );
+    expect(client).not.toBeUndefined();
+    expect(spyClientConnect).toHaveBeenCalled();
+    expect(spyClientConnect).toHaveBeenCalledTimes(1);
+  });
+
   afterEach(() => {
     PostgresqlDriverTemplateMethods.pool = undefined;
-    PostgresqlDriverTemplateMethods.client = undefined;
   });
 });
