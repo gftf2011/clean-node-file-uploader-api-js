@@ -1,8 +1,15 @@
 const PostgresqlPoolSingleton = require('./singleton/postgresql-pool-singleton');
 
 module.exports = {
-  connect({ host, user, max } = {}) {
-    this.pool = new PostgresqlPoolSingleton().getInstance(host, user, max);
+  connect({ host, database, user, password, port, max } = {}) {
+    this.pool = new PostgresqlPoolSingleton().getInstance(
+      host,
+      database,
+      user,
+      password,
+      port,
+      max,
+    );
   },
 
   async disconnect() {
