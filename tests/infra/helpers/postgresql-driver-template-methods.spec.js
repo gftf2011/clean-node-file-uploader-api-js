@@ -137,6 +137,84 @@ describe('PostgreSQL Driver', () => {
     expect(spyClientDisconnect).toHaveBeenCalledTimes(1);
   });
 
+  it('Should commit client single transaction', async () => {
+    PostgresqlPoolSingleton.mockImplementation(() => {
+      return {
+        getInstance: (_host, _database, _user, _password, _port, _max) => {
+          return {
+            connect: jest.fn().mockImplementation(() => ({
+              query: jest.fn().mockImplementation((statement, _values) => {
+                if (statement !== 'BEGIN' || statement !== 'COMMIT') {
+                  return {
+                    rows: [{}],
+                  };
+                }
+                return {};
+              }),
+            })),
+          };
+        },
+      };
+    });
+    PostgresqlDriverTemplateMethods.connect({
+      host: fakeHost,
+      database: fakeDb,
+      user: fakeUser,
+      password: fakePassword,
+      port: fakePort,
+      max: fakeMax,
+    });
+    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
+    const spyClientQuery = jest.spyOn(client, 'query');
+    await PostgresqlDriverTemplateMethods.singleTransaction(
+      client,
+      faker.random.word(),
+      ['name', 'path'],
+    );
+    await PostgresqlDriverTemplateMethods.commit(client);
+    expect(spyClientQuery).toHaveBeenCalled();
+    expect(spyClientQuery).toHaveBeenCalledTimes(3);
+  });
+
+  it('Should rollback client single transaction', async () => {
+    PostgresqlPoolSingleton.mockImplementation(() => {
+      return {
+        getInstance: (_host, _database, _user, _password, _port, _max) => {
+          return {
+            connect: jest.fn().mockImplementation(() => ({
+              query: jest.fn().mockImplementation((statement, _values) => {
+                if (statement !== 'BEGIN' || statement !== 'ROLLBACK') {
+                  return {
+                    rows: [{}],
+                  };
+                }
+                return {};
+              }),
+            })),
+          };
+        },
+      };
+    });
+    PostgresqlDriverTemplateMethods.connect({
+      host: fakeHost,
+      database: fakeDb,
+      user: fakeUser,
+      password: fakePassword,
+      port: fakePort,
+      max: fakeMax,
+    });
+    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
+    const spyClientQuery = jest.spyOn(client, 'query');
+    await PostgresqlDriverTemplateMethods.singleTransaction(
+      client,
+      faker.random.word(),
+      ['name', 'path'],
+    );
+    await PostgresqlDriverTemplateMethods.rollback(client);
+    expect(spyClientQuery).toHaveBeenCalled();
+    expect(spyClientQuery).toHaveBeenCalledTimes(3);
+  });
+
   afterEach(() => {
     PostgresqlDriverTemplateMethods.pool = undefined;
   });
