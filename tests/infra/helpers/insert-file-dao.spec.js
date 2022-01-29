@@ -11,6 +11,7 @@ const {
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_COMMIT,
   INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR,
 } = require('./constants');
 
@@ -143,6 +144,22 @@ describe('InsertFile DAO', () => {
   it('Should throw ServerError if DatabaseDriverTemplateMethods has no clientDisconnect method', async () => {
     const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
       INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT,
+    );
+    const fakeId = faker.datatype.uuid();
+    const fakeName = `${faker.random.word()}.jpg`;
+    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    databaseDriverTemplateMethodsSpy.response = {
+      id: fakeId,
+      name: fakeName,
+      path: fakePath,
+    };
+    const promise = sut.insertSingleFile(['name', 'path']);
+    await expect(promise).rejects.toThrow(new ServerError());
+  });
+
+  it('Should throw ServerError if DatabaseDriverTemplateMethods has no commit method', async () => {
+    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_COMMIT,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
