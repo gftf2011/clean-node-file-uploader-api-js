@@ -1,4 +1,5 @@
 const PostgresqlDatabaseError = require('../../../utils/errors/database-error');
+const ServerError = require('../../../utils/errors/server-error');
 
 module.exports = class InsertFileDAO {
   constructor({ databaseDriverTemplateMethods } = {}) {
@@ -6,6 +7,17 @@ module.exports = class InsertFileDAO {
   }
 
   async insertSingleFile(values) {
+    if (
+      !this.databaseDriverTemplateMethods ||
+      !this.databaseDriverTemplateMethods.getClientConnect ||
+      !this.databaseDriverTemplateMethods.singleTransaction ||
+      !this.databaseDriverTemplateMethods.clientDisconnect ||
+      !this.databaseDriverTemplateMethods.commit ||
+      !this.databaseDriverTemplateMethods.rollback
+    ) {
+      throw new ServerError();
+    }
+
     const client = await this.databaseDriverTemplateMethods.getClientConnect();
 
     if (!client) {

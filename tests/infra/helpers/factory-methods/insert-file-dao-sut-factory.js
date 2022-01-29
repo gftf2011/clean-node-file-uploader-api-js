@@ -3,6 +3,7 @@ const InsertFileDAO = require('../../../../src/infra/helpers/dao/insert-file-dao
 const DependenciesFactory = require('../factories/insert-file-dao-dependencies-factory');
 
 const {
+  INSERT_FILE_DAO_WITH_NO_DEPENDENCY,
   INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR,
 } = require('../constants');
 
@@ -19,6 +20,8 @@ module.exports = class SutFactory {
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
       });
+    } else if (type === INSERT_FILE_DAO_WITH_NO_DEPENDENCY) {
+      this.sut = new InsertFileDAO();
     } else {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
