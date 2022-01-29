@@ -22,12 +22,12 @@ module.exports = class InsertFileDAO {
           values,
         );
       await this.databaseDriverTemplateMethods.commit(client);
+      await this.databaseDriverTemplateMethods.clientDisconnect(client);
       return response;
     } catch (_error) {
       await this.databaseDriverTemplateMethods.rollback(client);
-      return null;
-    } finally {
       await this.databaseDriverTemplateMethods.clientDisconnect(client);
+      return null;
     }
   }
 };
