@@ -7,6 +7,7 @@ const SutFactory = require('./factory-methods/insert-file-dao-sut-factory');
 
 const {
   INSERT_FILE_DAO_WITH_NO_DEPENDENCY,
+  INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR,
 } = require('./constants');
 
@@ -75,6 +76,22 @@ describe('InsertFile DAO', () => {
   it('Should throw ServerError if no dependency is provided', async () => {
     const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
       INSERT_FILE_DAO_WITH_NO_DEPENDENCY,
+    );
+    const fakeId = faker.datatype.uuid();
+    const fakeName = `${faker.random.word()}.jpg`;
+    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    databaseDriverTemplateMethodsSpy.response = {
+      id: fakeId,
+      name: fakeName,
+      path: fakePath,
+    };
+    const promise = sut.insertSingleFile(['name', 'path']);
+    await expect(promise).rejects.toThrow(new ServerError());
+  });
+
+  it('Should throw ServerError if dependency is an empty object', async () => {
+    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
