@@ -6,6 +6,7 @@ const {
   INSERT_FILE_DAO_WITH_NO_DEPENDENCY,
   INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION,
   INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR,
 } = require('../constants');
 
@@ -31,6 +32,16 @@ module.exports = class SutFactory {
       INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION
     ) {
       this.dependencies.databaseDriverTemplateMethodsSpy.getClientConnect =
+        undefined;
+      this.sut = new InsertFileDAO({
+        databaseDriverTemplateMethods:
+          this.dependencies.databaseDriverTemplateMethodsSpy,
+      });
+    } else if (
+      type ===
+      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION
+    ) {
+      this.dependencies.databaseDriverTemplateMethodsSpy.singleTransaction =
         undefined;
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
