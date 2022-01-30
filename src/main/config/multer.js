@@ -28,13 +28,7 @@ const config = {
     fileSize: parameters.development.fileSize,
   },
   fileFilter: (_req, file, cb) => {
-    const allowedMimes = [
-      'image/jpg',
-      'image/jpeg',
-      'image/pjpeg',
-      'image/png',
-      'image/gif',
-    ];
+    const allowedMimes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
 
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);

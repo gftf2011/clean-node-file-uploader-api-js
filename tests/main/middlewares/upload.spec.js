@@ -179,4 +179,40 @@ describe('Upload Middleware', () => {
       path.basename(filePath),
     );
   });
+
+  it('Should throw error if mimetype is not supported', async () => {
+    const dirPath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'temp',
+      'uploads',
+    );
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'public',
+      'test',
+      'test-file.json',
+    );
+
+    server.post(
+      '/api/test-file-parser',
+      express.static(dirPath),
+      upload.single('file'),
+      (req, res) => {
+        const { originalname, filename } = req.file;
+        res.json({ originalname, filename });
+      },
+    );
+    const response = await request(server)
+      .post('/api/test-file-parser')
+      .attach('file', filePath)
+      .set('Content-Type', 'multipart/form-data');
+
+    expect(response.status).toBe(500);
+  });
 });
