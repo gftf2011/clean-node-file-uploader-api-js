@@ -5,6 +5,8 @@ npm run snyk:test
 npm run build:test
 npm run build:docker:test
 npm run docker:up
+npm run create:upload
 npx lint-staged
+npm run delete:upload
 npm run docker:down
 npm run docker:delete:volumes
