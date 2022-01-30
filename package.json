@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "create:upload": "mkdir temp/uploads",
+    "delete:upload": "rm -rf temp/uploads",
     "test": "jest --clearCache ; jest --colors --verbose --passWithNoTests --runInBand",
     "test:staged": "jest --clearCache ; jest --silent --passWithNoTests --findRelatedTests --verbose --colors --runInBand",
     "snyk:test": "npx snyk test",
@@ -13,7 +15,7 @@
     "docker:delete:volumes": "docker volume prune -f",
     "build:test": "rm -rf .env && cat .env.test >> .env",
     "build:docker:test": "rm -rf docker-compose.yml && cat docker/test/docker-compose.yml >> docker-compose.yml",
-    "docker:test:run": "npm run build:test && npm run build:docker:test && npm run docker:clear && npm run docker:up && npm run test",
+    "docker:test:run": "npm run create:upload && npm run build:test && npm run build:docker:test && npm run docker:clear && npm run docker:up && npm run test && npm run delete:upload",
     "commit": "cz"
   },
   "repository": {
@@ -51,6 +53,7 @@
     "supertest": "^6.2.2"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "fast-glob": "^3.2.11",

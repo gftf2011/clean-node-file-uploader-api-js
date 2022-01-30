@@ -7,27 +7,25 @@ const InvalidFileTypeError = require('../../utils/errors/invalid-file-type-error
 
 const parameters = {
   development: {
-    dest: path.resolve(__dirname, '..', '..', 'temp', 'uploads'),
+    dest: path.resolve(__dirname, '..', '..', '..', 'temp', 'uploads'),
     fileSize: 2 * 1024 * 1024,
   },
 };
 
 const config = {
+  dest: parameters.development.dest,
   storage: multer.diskStorage({
     destination: (_req, _file, cb) => {
-      cb(null, parameters[process.env.NODE_ENV].dest);
+      cb(null, parameters.development.dest);
     },
     filename: (_req, file, cb) => {
-      crypto.randomBytes(16, (err, res) => {
-        if (err) {
-          return cb(err, '');
-        }
+      crypto.randomBytes(16, (_err, res) => {
         return cb(null, res.toString('hex') + path.extname(file.originalname));
       });
     },
   }),
   limits: {
-    fileSize: parameters[process.env.NODE_ENV].fileSize,
+    fileSize: parameters.development.fileSize,
   },
   fileFilter: (_req, file, cb) => {
     const allowedMimes = [
