@@ -17,5 +17,7 @@ module.exports = {
     'prettier/prettier': 'error',
     'class-methods-use-this': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'import/no-dynamic-require': 'off',
+    'jest/expect-expect': 'off',
   },
 };

@@ -47,10 +47,14 @@
     "jest": "^27.4.7",
     "lint-staged": "^12.1.7",
     "prettier": "^2.5.1",
-    "snyk": "^1.834.0"
+    "snyk": "^1.834.0",
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "fast-glob": "^3.2.11",
+    "multer": "^1.4.4",
     "pg": "^8.7.1"
   }
 }
