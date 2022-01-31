@@ -2,8 +2,9 @@ const MissingParamError = require('../../utils/errors/missing-param-error');
 const ServerError = require('../../utils/errors/server-error');
 
 module.exports = class InsertFileRepository {
-  constructor({ insertFileDAO } = {}) {
+  constructor({ insertFileDAO, fileEntityToFileModelMapper } = {}) {
     this.insertFileDAO = insertFileDAO;
+    this.fileEntityToFileModelMapper = fileEntityToFileModelMapper;
   }
 
   async insert({ name, path } = {}) {
@@ -15,6 +16,9 @@ module.exports = class InsertFileRepository {
       throw new ServerError();
     }
     const file = await this.insertFileDAO.insertSingleFile([name, path]);
-    return file;
+    if (!file) {
+      return null;
+    }
+    return this.fileEntityToFileModelMapper.map(file);
   }
 };

@@ -19,8 +19,8 @@ describe('InsertFile Repository', () => {
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
     insertFileDAOSpy.file = {
-      name: fakeName,
-      path: fakePath,
+      originalname: fakeName,
+      filename: fakePath,
     };
     const request = {
       name: fakeName,
@@ -43,7 +43,10 @@ describe('InsertFile Repository', () => {
       path: fakePath,
     };
     const response = await sut.insert(request);
-    expect(response).toEqual(insertFileDAOSpy.file);
+    expect(response).toEqual({
+      originalname: fakeName,
+      filename: fakePath,
+    });
   });
 
   it('Should return null if InsertFileDAO could not commit transaction', async () => {

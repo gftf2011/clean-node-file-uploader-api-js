@@ -36,10 +36,14 @@ module.exports = class SutFactory {
       };
       this.sut = new InsertFileRepository({
         insertFileDAO: this.dependencies.insertFileDAOSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else {
       this.sut = new InsertFileRepository({
         insertFileDAO: this.dependencies.insertFileDAOSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     }
 
