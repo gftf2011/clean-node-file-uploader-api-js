@@ -6,6 +6,7 @@ const {
   INSERT_FILE_DAO_WITH_NO_DEPENDENCY,
   INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   INSERT_FILE_DAO_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER_AS_DEPENDENCY,
+  INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT,
@@ -40,6 +41,15 @@ module.exports = class SutFactory {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+      });
+    } else if (
+      type ===
+      INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP
+    ) {
+      this.sut = new InsertFileDAO({
+        databaseDriverTemplateMethods:
+          this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper: {},
       });
     } else if (
       type ===
