@@ -17,7 +17,7 @@ describe('InsertFile Repository', () => {
   it('Should call InsertFileDAO with correct values', async () => {
     const { sut, insertFileDAOSpy } = new SutFactory().create();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     insertFileDAOSpy.file = {
       name: fakeName,
       path: fakePath,
@@ -33,7 +33,7 @@ describe('InsertFile Repository', () => {
   it('Should return file with correct values', async () => {
     const { sut, insertFileDAOSpy } = new SutFactory().create();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     insertFileDAOSpy.file = {
       name: fakeName,
       path: fakePath,
@@ -49,7 +49,7 @@ describe('InsertFile Repository', () => {
   it('Should return null if InsertFileDAO could not commit transaction', async () => {
     const { sut, insertFileDAOSpy } = new SutFactory().create();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     insertFileDAOSpy.file = null;
     const request = {
       name: fakeName,
@@ -61,7 +61,7 @@ describe('InsertFile Repository', () => {
 
   it('Should return MissingParamError if name is not provided', async () => {
     const { sut } = new SutFactory().create();
-    const fakePath = `${faker.image.imageUrl()}/${faker.random.word()}.jpg`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     const request = {
       path: fakePath,
     };
@@ -84,7 +84,7 @@ describe('InsertFile Repository', () => {
       INSERT_FILE_REPOSITORY_WITH_NO_DEPENDENCY,
     );
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     const request = {
       name: fakeName,
       path: fakePath,
@@ -98,7 +98,7 @@ describe('InsertFile Repository', () => {
       INSERT_FILE_REPOSITORY_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
     );
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     const request = {
       name: fakeName,
       path: fakePath,
@@ -112,7 +112,7 @@ describe('InsertFile Repository', () => {
       INSERT_FILE_REPOSITORY_HAS_INSERT_FILE_DAO_WITH_NO_INSERT_SINGLE_FILE,
     );
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     const request = {
       name: fakeName,
       path: fakePath,
@@ -126,7 +126,7 @@ describe('InsertFile Repository', () => {
       INSERT_FILE_REPOSITORY_SUT_INSERT_FILE_DAO_THROWING_ERROR,
     );
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     const request = {
       name: fakeName,
       path: fakePath,
