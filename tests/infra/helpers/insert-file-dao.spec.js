@@ -9,6 +9,7 @@ const {
   INSERT_FILE_DAO_WITH_NO_DEPENDENCY,
   INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   INSERT_FILE_DAO_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER_AS_DEPENDENCY,
+  INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION,
   INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT,
@@ -98,6 +99,22 @@ describe('InsertFile DAO', () => {
     await expect(promise).rejects.toThrow(new ServerError());
   });
 
+  it('Should throw ServerError if dependency is an empty object', async () => {
+    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
+    );
+    const fakeId = faker.datatype.uuid();
+    const fakeName = `${faker.random.word()}.jpg`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
+    databaseDriverTemplateMethodsSpy.response = {
+      id: fakeId,
+      name: fakeName,
+      path: fakePath,
+    };
+    const promise = sut.insertSingleFile(['name', 'path']);
+    await expect(promise).rejects.toThrow(new ServerError());
+  });
+
   it('Should throw ServerError if file mapper is not provided as dependency', async () => {
     const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
       INSERT_FILE_DAO_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER_AS_DEPENDENCY,
@@ -114,9 +131,9 @@ describe('InsertFile DAO', () => {
     await expect(promise).rejects.toThrow(new ServerError());
   });
 
-  it('Should throw ServerError if dependency is an empty object', async () => {
+  it('Should throw ServerError if file mapper has no map method', async () => {
     const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
-      INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
+      INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
