@@ -9,8 +9,6 @@ const PostgresqlDatabaseError = require('../../../src/utils/errors/database-erro
 const {
   INSERT_FILE_REPOSITORY_WITH_NO_DEPENDENCY,
   INSERT_FILE_REPOSITORY_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
-  INSERT_FILE_REPOSITORY_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER,
-  INSERT_FILE_REPOSITORY_WITH_FILE_ENTITY_TO_FILE_MODEL_MAPPER_HAS_NO_MAP,
   INSERT_FILE_REPOSITORY_HAS_INSERT_FILE_DAO_WITH_NO_INSERT_SINGLE_FILE,
   INSERT_FILE_REPOSITORY_SUT_INSERT_FILE_DAO_THROWING_ERROR,
 } = require('../helpers/constants');
@@ -37,8 +35,8 @@ describe('InsertFile Repository', () => {
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
     insertFileDAOSpy.file = {
-      name: fakeName,
-      path: fakePath,
+      originalname: fakeName,
+      filename: fakePath,
     };
     const request = {
       name: fakeName,
@@ -101,34 +99,6 @@ describe('InsertFile Repository', () => {
   it('Should return ServerError if dependency is an empty object', async () => {
     const { sut } = new SutFactory().create(
       INSERT_FILE_REPOSITORY_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
-    );
-    const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.datatype.uuid()}.jpg`;
-    const request = {
-      name: fakeName,
-      path: fakePath,
-    };
-    const promise = sut.insert(request);
-    await expect(promise).rejects.toThrow(new ServerError());
-  });
-
-  it('Should return ServerError if has no FileEntityToFileModelMapper dependency', async () => {
-    const { sut } = new SutFactory().create(
-      INSERT_FILE_REPOSITORY_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER,
-    );
-    const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.datatype.uuid()}.jpg`;
-    const request = {
-      name: fakeName,
-      path: fakePath,
-    };
-    const promise = sut.insert(request);
-    await expect(promise).rejects.toThrow(new ServerError());
-  });
-
-  it('Should return ServerError if FileEntityToFileModelMapper has no map method', async () => {
-    const { sut } = new SutFactory().create(
-      INSERT_FILE_REPOSITORY_WITH_FILE_ENTITY_TO_FILE_MODEL_MAPPER_HAS_NO_MAP,
     );
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
