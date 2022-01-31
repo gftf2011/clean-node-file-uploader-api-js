@@ -12,7 +12,12 @@ module.exports = class InsertFileRepository {
       throw new MissingParamError('name');
     } else if (!path) {
       throw new MissingParamError('path');
-    } else if (!this.insertFileDAO || !this.insertFileDAO.insertSingleFile) {
+    } else if (
+      !this.insertFileDAO ||
+      !this.insertFileDAO.insertSingleFile ||
+      !this.fileEntityToFileModelMapper ||
+      !this.fileEntityToFileModelMapper.map
+    ) {
       throw new ServerError();
     }
     const file = await this.insertFileDAO.insertSingleFile([name, path]);
