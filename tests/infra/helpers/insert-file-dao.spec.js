@@ -27,7 +27,7 @@ describe('InsertFile DAO', () => {
     const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create();
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.clientConnection = new MockClient();
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
@@ -35,7 +35,10 @@ describe('InsertFile DAO', () => {
       path: fakePath,
     };
     const response = await sut.insertSingleFile(['name', 'path']);
-    expect(response).toEqual(databaseDriverTemplateMethodsSpy.response);
+    expect(response).toEqual({
+      originalname: fakeName,
+      filename: fakePath,
+    });
     expect(databaseDriverTemplateMethodsSpy.clientCommit).toEqual(
       new MockClient(),
     );
@@ -48,7 +51,7 @@ describe('InsertFile DAO', () => {
     const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create();
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,
@@ -64,7 +67,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.clientConnection = new MockClient();
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
@@ -84,7 +87,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,
@@ -100,7 +103,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,
@@ -116,7 +119,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,
@@ -132,7 +135,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,
@@ -148,7 +151,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,
@@ -164,7 +167,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,
@@ -180,7 +183,7 @@ describe('InsertFile DAO', () => {
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
-    const fakePath = `${faker.image.imageUrl()}/${fakeName}`;
+    const fakePath = `${faker.datatype.uuid()}.jpg`;
     databaseDriverTemplateMethodsSpy.response = {
       id: fakeId,
       name: fakeName,

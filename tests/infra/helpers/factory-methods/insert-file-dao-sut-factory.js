@@ -25,6 +25,8 @@ module.exports = class SutFactory {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else if (type === INSERT_FILE_DAO_WITH_NO_DEPENDENCY) {
       this.sut = new InsertFileDAO();
@@ -39,6 +41,8 @@ module.exports = class SutFactory {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else if (
       type ===
@@ -49,6 +53,8 @@ module.exports = class SutFactory {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else if (
       type ===
@@ -59,6 +65,8 @@ module.exports = class SutFactory {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else if (
       type ===
@@ -68,6 +76,8 @@ module.exports = class SutFactory {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else if (
       type ===
@@ -77,11 +87,15 @@ module.exports = class SutFactory {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else {
       this.sut = new InsertFileDAO({
         databaseDriverTemplateMethods:
           this.dependencies.databaseDriverTemplateMethodsSpy,
+        fileEntityToFileModelMapper:
+          this.dependencies.fileEntityToFileModelMapperSpy,
       });
     }
 
