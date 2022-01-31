@@ -16,10 +16,7 @@ module.exports = class FileRecordUseCase {
     }
     try {
       const response = await this.insertFileRepository.insert({ name, path });
-      return {
-        originalname: response.name,
-        filename: response.path,
-      };
+      return response;
     } catch (_error) {
       return null;
     }
