@@ -12,6 +12,8 @@ require('../../../src/main/bootstrap');
 
 const config = require('../../../src/main/config/postgresql');
 
+const InvalidFileTypeError = require('../../../src/utils/errors/invalid-file-type-error');
+
 describe('File Routes', () => {
   beforeAll(async () => {
     PostgresqlDriverTemplateMethods.connect(config);
@@ -104,6 +106,26 @@ describe('File Routes', () => {
     expect(response.status).toBe(201);
     expect(originalname).toBe(basename(filePath));
     expect(fs.existsSync(join(dirPath, filename))).toBe(true);
+  });
+
+  it('Should throw error if invalid mimetype is provided', async () => {
+    const filePath = resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'public',
+      'test',
+      'test-file.json',
+    );
+    const response = await request(app)
+      .post('/api/file')
+      .attach('file', filePath);
+
+    expect(response.status).toBe(500);
+    expect(JSON.parse(response.text).name).toBe(
+      new InvalidFileTypeError().name,
+    );
   });
 
   afterEach(async () => {

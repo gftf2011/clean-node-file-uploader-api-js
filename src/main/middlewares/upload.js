@@ -1,7 +1,3 @@
-const multer = require('multer');
+const MulterSingleMiddlewareAdapter = require('../adapters/multer-single-middleware-adapter');
 
-const configMulter = require('../config/multer');
-
-const upload = multer(configMulter);
-
-module.exports = upload;
+module.exports = MulterSingleMiddlewareAdapter.adapter;
