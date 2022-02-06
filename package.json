@@ -18,7 +18,7 @@
     "build:test": "rm -rf .env && cat .env.test >> .env",
     "build:docker:test": "rm -rf docker-compose.yml && cat docker/test/docker-compose.yml >> docker-compose.yml",
     "docker:test:run": "npm run create:upload && npm run build:test && npm run build:docker:test && npm run docker:clear && npm run docker:up && npm run test && npm run delete:upload",
-    "docker:test:unit:run": "npm run create:upload && npm run build:test && npm run build:docker:test && npm run docker:clear && npm run docker:up && npm run test:unit && npm run delete:upload",
+    "test:unit:run": "npm run create:upload && npm run build:test && npm run test:unit && npm run delete:upload",
     "commit": "cz"
   },
   "repository": {
