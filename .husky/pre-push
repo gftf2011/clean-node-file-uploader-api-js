@@ -4,6 +4,8 @@
 npm run build:test
 npm run build:docker:test
 npm run docker:up
+npm run create:upload
 npm run test:ci
+npm run delete:upload
 npm run docker:down
 npm run docker:delete:volumes
