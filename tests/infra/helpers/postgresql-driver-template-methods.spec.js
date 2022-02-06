@@ -109,7 +109,7 @@ describe('PostgreSQL Driver', () => {
         getInstance: (_host, _database, _user, _password, _port, _max) => {
           return {
             connect: jest.fn().mockImplementation(() => ({
-              end: jest.fn(),
+              release: jest.fn(),
             })),
           };
         },
@@ -128,7 +128,7 @@ describe('PostgreSQL Driver', () => {
       PostgresqlDriverTemplateMethods.pool,
       'connect',
     );
-    const spyClientDisconnect = jest.spyOn(client, 'end');
+    const spyClientDisconnect = jest.spyOn(client, 'release');
     expect(client).not.toBeUndefined();
     expect(spyClientConnect).toHaveBeenCalled();
     expect(spyClientConnect).toHaveBeenCalledTimes(1);

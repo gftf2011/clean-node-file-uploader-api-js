@@ -22,7 +22,7 @@ module.exports = {
   },
 
   async clientDisconnect(client) {
-    await client.end();
+    client.release();
   },
 
   async singleTransaction(client, statement, values) {

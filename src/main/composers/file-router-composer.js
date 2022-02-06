@@ -29,13 +29,23 @@ const InsertFileDAO = require('../../infra/helpers/dao/insert-file-dao');
  */
 const DatabaseDriverTemplateMethods = require('../../infra/helpers/template-methods/postgresql-driver-template-methods');
 
+/**
+ * Mappers
+ */
+const FileEntityToFileModelMapper = require('../../infra/helpers/data-mapper/file-entity-to-file-model-mapper');
+
 module.exports = class FileRouterComposer {
   compose() {
     const fileDeleteAdapter = new FileDeleteAdapter();
 
     const databaseDriverTemplateMethods = DatabaseDriverTemplateMethods;
 
-    const insertFileDAO = new InsertFileDAO({ databaseDriverTemplateMethods });
+    const fileEntityToFileModelMapper = new FileEntityToFileModelMapper();
+
+    const insertFileDAO = new InsertFileDAO({
+      databaseDriverTemplateMethods,
+      fileEntityToFileModelMapper,
+    });
 
     const insertFileRepository = new InsertFileRepository({ insertFileDAO });
 
