@@ -62,6 +62,28 @@ describe('File Routes', () => {
     expect(fs.existsSync(join(dirPath, filename))).toBe(true);
   });
 
+  it('Should return 201 when valid JPEG file is provided', async () => {
+    const filePath = resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'public',
+      'test',
+      'test-image.jpeg',
+    );
+    const dirPath = resolve(__dirname, '..', '..', '..', 'temp', 'uploads');
+    const response = await request(app)
+      .post('/api/file')
+      .attach('file', filePath);
+    const { originalname } = JSON.parse(response.text);
+    const { filename } = JSON.parse(response.text);
+
+    expect(response.status).toBe(201);
+    expect(originalname).toBe(basename(filePath));
+    expect(fs.existsSync(join(dirPath, filename))).toBe(true);
+  });
+
   afterEach(async () => {
     const client = await PostgresqlDriverTemplateMethods.getClientConnect();
     await client.query('BEGIN');
