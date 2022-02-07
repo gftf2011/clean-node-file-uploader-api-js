@@ -8,5 +8,6 @@ config.coveragePathIgnorePatterns = [
   '<rootDir>/src/main/bootstrap',
   '<rootDir>/src/main/composers',
   '<rootDir>/src/main/config/routes.js',
+  '<rootDir>/src/main/routes/file-routes.js',
 ];
 module.exports = config;
