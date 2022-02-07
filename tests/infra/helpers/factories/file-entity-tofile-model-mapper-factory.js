@@ -1,10 +1,10 @@
 const FileEntityToFileModelMapper = require('../../../../src/infra/helpers/data-mapper/file-entity-to-file-model-mapper');
 
-module.exports = class FileEntityToFileModelMapperFactory {
+module.exports = class SutFactory {
   create() {
-    this.fileEntityToFileModelMapper = new FileEntityToFileModelMapper();
+    this.sut = new FileEntityToFileModelMapper();
     return {
-      fileEntityToFileModelMapper: this.fileEntityToFileModelMapper,
+      sut: this.sut,
     };
   }
 };
