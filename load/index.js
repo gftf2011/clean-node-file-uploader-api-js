@@ -5,8 +5,8 @@ const path = require('path');
 const instance = autocannon({
   title: 'Load Test for /file route',
   url: 'http://localhost:3333/api/file',
-  connections: 10, // default
-  duration: 10, // default
+  connections: 20, // default
+  duration: 40, // default
   workers: 1,
   method: 'POST',
   form: {
