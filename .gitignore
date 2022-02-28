@@ -114,3 +114,7 @@ docker-compose.yml
 # temp
 temp/uploads
 !temp
+
+# clinicJS
+
+.clinic/
