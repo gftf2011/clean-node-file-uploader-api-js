@@ -1,43 +1,47 @@
-const faker = require('faker');
+const path = require('path');
 const fs = require('fs');
-const { resolve } = require('path');
 
-const DeleteDiskMemoryFileAdapter = require('../../../src/main/adapters/delete-disk-memory-file-adapter');
+const SutFactory = require('./helpers/factories/delete-disk-memory-file-adapter-factory');
 
-const DESTINATION_FILE_NAME = `${faker.datatype.uuid()}.png`;
-const SOURCE_FILE = resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'public',
-  'test',
-  'test-image.png',
-);
-const DESTINATION_FILE = resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'temp',
-  'uploads',
-  DESTINATION_FILE_NAME,
-);
+const FileNotFoundError = require('../../../src/utils/errors/file-not-found-error');
 
 describe('DeleteDiskMemoryFile Adapter', () => {
-  let sut;
+  it('Should delete file if exists', async () => {
+    const src = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'public',
+      'test',
+      'test-image.png',
+    );
+    const dest = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'temp',
+      'uploads',
+      'test-image.png',
+    );
+    const { sut } = new SutFactory().create();
 
-  beforeAll(() => {
-    sut = new DeleteDiskMemoryFileAdapter();
+    fs.copyFileSync(src, dest, fs.constants.COPYFILE_EXCL);
+
+    expect(fs.existsSync(dest)).toBe(true);
+
+    await sut.delete('test-image.png');
+
+    expect(fs.existsSync(dest)).toBe(false);
   });
 
-  it('Should delete file if exists', async () => {
-    fs.copyFileSync(SOURCE_FILE, DESTINATION_FILE);
+  it('Should throw error if file does not exists', async () => {
+    const { sut } = new SutFactory().create();
+    const promise = sut.delete('test-image.png');
 
-    await sut.delete(DESTINATION_FILE_NAME);
-
-    const fileExists = fs.existsSync(DESTINATION_FILE);
-
-    expect(fileExists).toBe(false);
+    await expect(promise).rejects.toThrow(
+      new FileNotFoundError('test-image.png'),
+    );
   });
 });

@@ -34,7 +34,7 @@ describe('Upload Middleware', () => {
     server.post(
       '/api/test-file-parser',
       express.static(dirPath),
-      upload.single('file'),
+      upload,
       (req, res) => {
         const { originalname, filename } = req.file;
         res.json({ originalname, filename });
@@ -76,7 +76,7 @@ describe('Upload Middleware', () => {
     server.post(
       '/api/test-file-parser',
       express.static(dirPath),
-      upload.single('file'),
+      upload,
       (req, res) => {
         const { originalname, filename } = req.file;
         res.json({ originalname, filename });
@@ -118,7 +118,7 @@ describe('Upload Middleware', () => {
     server.post(
       '/api/test-file-parser',
       express.static(dirPath),
-      upload.single('file'),
+      upload,
       (req, res) => {
         const { originalname, filename } = req.file;
         res.json({ originalname, filename });
@@ -160,7 +160,7 @@ describe('Upload Middleware', () => {
     server.post(
       '/api/test-file-parser',
       express.static(dirPath),
-      upload.single('file'),
+      upload,
       (req, res) => {
         const { originalname, filename } = req.file;
         res.json({ originalname, filename });
@@ -202,7 +202,7 @@ describe('Upload Middleware', () => {
     server.post(
       '/api/test-file-parser',
       express.static(dirPath),
-      upload.single('file'),
+      upload,
       (req, res) => {
         const { originalname, filename } = req.file;
         res.json({ originalname, filename });

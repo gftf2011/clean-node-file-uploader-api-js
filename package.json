@@ -9,6 +9,7 @@
     "test": "jest --clearCache ; jest --colors --verbose --passWithNoTests --runInBand",
     "test:staged": "jest --clearCache ; jest --silent --passWithNoTests --findRelatedTests --verbose --colors --runInBand",
     "test:ci": "jest --clearCache ; jest --coverage --noStackTrace --runInBand",
+    "test:unit": "jest --clearCache ; jest --colors --coverage --verbose --runInBand -c jest-unit-config.js",
     "snyk:test": "npx snyk test",
     "docker:up": "docker-compose up -d --remove-orphans",
     "docker:down": "docker-compose down",
@@ -17,6 +18,7 @@
     "build:test": "rm -rf .env && cat .env.test >> .env",
     "build:docker:test": "rm -rf docker-compose.yml && cat docker/test/docker-compose.yml >> docker-compose.yml",
     "docker:test:run": "npm run create:upload && npm run build:test && npm run build:docker:test && npm run docker:clear && npm run docker:up && npm run test && npm run delete:upload",
+    "test:unit:run": "npm run create:upload && npm run build:test && npm run test:unit && npm run delete:upload",
     "commit": "cz"
   },
   "repository": {
