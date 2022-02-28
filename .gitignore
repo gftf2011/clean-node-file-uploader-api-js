@@ -108,6 +108,7 @@ cache/
 
 # Docker Compose
 docker-compose.yml
+!docker/dev/docker-compose.yml
 !docker/test/docker-compose.yml
 
 # temp
