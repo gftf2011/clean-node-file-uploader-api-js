@@ -5,8 +5,14 @@ const FileNotFoundError = require('../../utils/errors/file-not-found-error');
 
 module.exports = class DeleteDiskMemoryFileAdapter {
   async delete(path) {
-    if (fs.existsSync(resolve('..', '..', '..', 'temp', 'uploads', path))) {
-      await fs.unlink(resolve('..', '..', '..', 'temp', 'uploads', path));
+    if (
+      fs.existsSync(
+        resolve(__dirname, '..', '..', '..', 'temp', 'uploads', path),
+      )
+    ) {
+      fs.unlinkSync(
+        resolve(__dirname, '..', '..', '..', 'temp', 'uploads', path),
+      );
     } else {
       throw new FileNotFoundError(path);
     }
