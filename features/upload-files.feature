@@ -10,3 +10,8 @@ Feature: Upload files
     Given I a have the endpoint "/api/file"
     When I send the request with a valid jpeg file
     Then I should get 201 response
+
+  Scenario: Upload valid .JPG file
+    Given I a have the endpoint "/api/file"
+    When I send the request with a valid jpg file
+    Then I should get 201 response

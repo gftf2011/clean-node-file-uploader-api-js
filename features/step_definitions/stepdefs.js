@@ -5,7 +5,11 @@ const assert = require('assert');
 /**
  * Support
  */
-const { sendPngFile, sendJpegFile } = require('../support/api-support');
+const {
+  sendPngFile,
+  sendJpegFile,
+  sendJpgFile,
+} = require('../support/api-support');
 
 let endpointPath;
 let response;
@@ -20,6 +24,10 @@ When('I send the request with a valid png file', async () => {
 
 When('I send the request with a valid jpeg file', async () => {
   response = await sendJpegFile(endpointPath);
+});
+
+When('I send the request with a valid jpg file', async () => {
+  response = await sendJpgFile(endpointPath);
 });
 
 Then('I should get {int} response', status => {
