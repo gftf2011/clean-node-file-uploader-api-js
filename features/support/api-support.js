@@ -30,6 +30,23 @@ const sendPngFile = async url => {
   return response;
 };
 
+const sendJpegFile = async url => {
+  const data = new FormData();
+  data.append(
+    'file',
+    fs.createReadStream(
+      path.resolve(__dirname, '..', '..', 'public', 'test', 'test-image.jpeg'),
+    ),
+  );
+
+  const response = await instance.post(url, data, {
+    headers: data.getHeaders(),
+  });
+
+  return response;
+};
+
 module.exports = {
   sendPngFile,
+  sendJpegFile,
 };
