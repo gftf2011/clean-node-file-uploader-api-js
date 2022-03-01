@@ -1,0 +1,20 @@
+{
+  "cucumberautocomplete.steps": [
+    "features/steps/**/*.js",
+    "node_modules/jest-cucumber/dist/src/*.js"
+  ],
+  "cucumberautocomplete.syncfeatures": "features/*feature",
+  "cucumberautocomplete.strictGherkinCompletion": true,
+  "cucumberautocomplete.strictGherkinValidation": true,
+  "cucumberautocomplete.smartSnippets": true,
+  "cucumberautocomplete.stepsInvariants": true,
+  "cucumberautocomplete.skipDocStringsFormat": true,
+  "cucumberautocomplete.onTypeFormat": true,
+  "cucumberautocomplete.gherkinDefinitionPart": "(Given|When|Then)\\(",
+  "editor.quickSuggestions": {
+    "comments": false,
+    "strings": true,
+    "other": true
+  },
+  "cucumberautocomplete.stepRegExSymbol": "'"
+}
