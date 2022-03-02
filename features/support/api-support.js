@@ -78,9 +78,32 @@ const sendGifFile = async url => {
   return response;
 };
 
+const sendInvalidFile = async url => {
+  const data = new FormData();
+  data.append(
+    'file',
+    fs.createReadStream(
+      path.resolve(__dirname, '..', '..', 'public', 'test', 'test-file.json'),
+    ),
+  );
+
+  let response;
+
+  try {
+    response = await instance.post(url, data, {
+      headers: data.getHeaders(),
+    });
+  } catch (err) {
+    response = err.response;
+  }
+
+  return response;
+};
+
 module.exports = {
   sendPngFile,
   sendJpegFile,
   sendJpgFile,
   sendGifFile,
+  sendInvalidFile,
 };

@@ -10,12 +10,12 @@ const {
   sendJpegFile,
   sendJpgFile,
   sendGifFile,
+  sendInvalidFile,
 } = require('../support/api-support');
 
 let endpointPath;
 let response;
 
-// eslint-disable-next-line consistent-return
 const apiFactoryResponse = async type => {
   if (type === 'png') {
     return sendPngFile(endpointPath);
@@ -29,13 +29,14 @@ const apiFactoryResponse = async type => {
   if (type === 'gif') {
     return sendGifFile(endpointPath);
   }
+  return sendInvalidFile(endpointPath);
 };
 
 Given('I a have the endpoint {string}', endpoint => {
   endpointPath = endpoint;
 });
 
-When('I send the request with a valid {string} file', async fileType => {
+When('I send the request of a {string} file', async fileType => {
   response = await apiFactoryResponse(fileType);
 });
 
