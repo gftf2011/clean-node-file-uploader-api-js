@@ -116,5 +116,8 @@ temp/uploads
 !temp
 
 # clinicJS
-
 .clinic/
+
+# env folder
+!env/dev/.env
+!env/test/.env

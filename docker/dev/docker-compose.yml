@@ -16,5 +16,21 @@ services:
     restart: always
     ports:
       - ${POSTGRES_PORT}:5432
+  app:
+    image: node:lts-alpine
+    container_name: ${APP_CONTAINER_NAME}
+    working_dir: /usr/projects/clean-node-file-uploader-api-js
+    volumes:
+      - ./src/:/usr/projects/clean-node-file-uploader-api-js/src/
+      - ./package.json:/usr/projects/clean-node-file-uploader-api-js/package.json
+      - ./babel.config.js:/usr/projects/clean-node-file-uploader-api-js/babel.config.js
+    env_file:
+     - ./.env
+    command: sh -c "npm run create:temp && npm run create:upload && npm install && npm run start"
+    restart: always
+    ports:
+      - ${APPLICATION_PORT}:3333
+    depends_on:
+      - postgres
 volumes:
   postgres_data: {}
