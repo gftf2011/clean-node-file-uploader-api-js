@@ -13,7 +13,7 @@
     "test:unit": "jest --clearCache ; jest --colors --coverage --verbose --runInBand -c jest-unit-config.js",
     "test:cucumber": "npx cucumber-js",
     "snyk:test": "npx snyk test",
-    "build": "npx babel src/** -d dist",
+    "build": "npx babel src/ -d dist/",
     "start": "node src/main/index.js",
     "start:build": "node dist/index.js",
     "docker:up": "docker-compose up -d --remove-orphans",
@@ -29,7 +29,7 @@
     "docker:local:doctor:run": "npm run create:upload && npm run build:local && npm run build:docker:local && npm run docker:clear && npm run docker:up && npx clinic doctor --on-port 'node load/index.js' -- node src/main/index.js && npm run delete:upload",
     "docker:dev:run": "npm run create:upload && npm run build:dev && npm run build:docker:dev && npm run docker:clear && npm run build && npm run docker:up",
     "docker:test:run": "npm run create:upload && npm run build:test && npm run build:docker:test && npm run docker:clear && npm run docker:up && npm run test && npm run delete:upload",
-    "docker:local:run": "npm run create:upload && npm run build:local && npm run build:docker:local && npm run docker:clear && npm run docker:up && npm run test && npm run delete:upload",
+    "docker:local:run": "npm run create:upload && npm run build:local && npm run build:docker:local && npm run docker:clear && npm run docker:up && npm run start:build",
     "test:unit:run": "npm run create:upload && npm run build:test && npm run test:unit && npm run delete:upload",
     "load:test": "node load/index.js",
     "commit": "cz"
