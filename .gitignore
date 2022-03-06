@@ -110,6 +110,7 @@ cache/
 docker-compose.yml
 !docker/dev/docker-compose.yml
 !docker/test/docker-compose.yml
+!docker/local/docker-compose.yml
 
 # temp
 temp/uploads
@@ -121,3 +122,4 @@ temp/uploads
 # env folder
 !env/dev/.env
 !env/test/.env
+!env/local/.env
