@@ -15,7 +15,7 @@
     "snyk:test": "npx snyk test",
     "build": "npx babel src/ -d dist/",
     "start": "node src/main/index.js",
-    "start:build": "node dist/index.js",
+    "start:build": "node dist/main/index.js",
     "docker:up": "docker-compose up -d --remove-orphans",
     "docker:down": "docker-compose down",
     "docker:clear": "docker-compose down && npm run docker:delete:volumes",
