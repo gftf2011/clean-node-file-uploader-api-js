@@ -1,11 +1,9 @@
-jest.mock(
-  '../../../src/infra/helpers/template-methods/singleton/postgresql-pool-singleton',
-);
+jest.mock('../../../src/infra/helpers/singleton/postgresql-pool-singleton');
 
 const faker = require('faker');
 
-const PostgresqlDriverTemplateMethods = require('../../../src/infra/helpers/template-methods/postgresql-driver-template-methods');
-const PostgresqlPoolSingleton = require('../../../src/infra/helpers/template-methods/singleton/postgresql-pool-singleton');
+const PostgresqlDriver = require('../../../src/infra/helpers/postgresql-driver');
+const PostgresqlPoolSingleton = require('../../../src/infra/helpers/singleton/postgresql-pool-singleton');
 
 describe('PostgreSQL Driver', () => {
   let fakeIp;
@@ -34,8 +32,8 @@ describe('PostgreSQL Driver', () => {
         },
       };
     });
-    expect(PostgresqlDriverTemplateMethods.pool).toBeUndefined();
-    PostgresqlDriverTemplateMethods.connect({
+    expect(PostgresqlDriver.pool).toBeUndefined();
+    PostgresqlDriver.connect({
       host: fakeHost,
       database: fakeDb,
       user: fakeUser,
@@ -43,7 +41,7 @@ describe('PostgreSQL Driver', () => {
       port: fakePort,
       max: fakeMax,
     });
-    expect(PostgresqlDriverTemplateMethods.pool).not.toBeUndefined();
+    expect(PostgresqlDriver.pool).not.toBeUndefined();
   });
 
   it('Should disconnect from server after set connection', async () => {
@@ -56,8 +54,8 @@ describe('PostgreSQL Driver', () => {
         },
       };
     });
-    expect(PostgresqlDriverTemplateMethods.pool).toBeUndefined();
-    PostgresqlDriverTemplateMethods.connect({
+    expect(PostgresqlDriver.pool).toBeUndefined();
+    PostgresqlDriver.connect({
       host: fakeHost,
       database: fakeDb,
       user: fakeUser,
@@ -65,12 +63,9 @@ describe('PostgreSQL Driver', () => {
       port: fakePort,
       max: fakeMax,
     });
-    expect(PostgresqlDriverTemplateMethods.pool).not.toBeUndefined();
-    await PostgresqlDriverTemplateMethods.disconnect();
-    const spyDisconnect = jest.spyOn(
-      PostgresqlDriverTemplateMethods.pool,
-      'end',
-    );
+    expect(PostgresqlDriver.pool).not.toBeUndefined();
+    await PostgresqlDriver.disconnect();
+    const spyDisconnect = jest.spyOn(PostgresqlDriver.pool, 'end');
     expect(spyDisconnect).toHaveBeenCalled();
     expect(spyDisconnect).toHaveBeenCalledTimes(1);
   });
@@ -85,7 +80,7 @@ describe('PostgreSQL Driver', () => {
         },
       };
     });
-    PostgresqlDriverTemplateMethods.connect({
+    PostgresqlDriver.connect({
       host: fakeHost,
       database: fakeDb,
       user: fakeUser,
@@ -93,11 +88,8 @@ describe('PostgreSQL Driver', () => {
       port: fakePort,
       max: fakeMax,
     });
-    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
-    const spyClientConnect = jest.spyOn(
-      PostgresqlDriverTemplateMethods.pool,
-      'connect',
-    );
+    const client = await PostgresqlDriver.getClientConnect();
+    const spyClientConnect = jest.spyOn(PostgresqlDriver.pool, 'connect');
     expect(client).not.toBeUndefined();
     expect(spyClientConnect).toHaveBeenCalled();
     expect(spyClientConnect).toHaveBeenCalledTimes(1);
@@ -115,7 +107,7 @@ describe('PostgreSQL Driver', () => {
         },
       };
     });
-    PostgresqlDriverTemplateMethods.connect({
+    PostgresqlDriver.connect({
       host: fakeHost,
       database: fakeDb,
       user: fakeUser,
@@ -123,16 +115,13 @@ describe('PostgreSQL Driver', () => {
       port: fakePort,
       max: fakeMax,
     });
-    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
-    const spyClientConnect = jest.spyOn(
-      PostgresqlDriverTemplateMethods.pool,
-      'connect',
-    );
+    const client = await PostgresqlDriver.getClientConnect();
+    const spyClientConnect = jest.spyOn(PostgresqlDriver.pool, 'connect');
     const spyClientDisconnect = jest.spyOn(client, 'release');
     expect(client).not.toBeUndefined();
     expect(spyClientConnect).toHaveBeenCalled();
     expect(spyClientConnect).toHaveBeenCalledTimes(1);
-    await PostgresqlDriverTemplateMethods.clientDisconnect(client);
+    await PostgresqlDriver.clientDisconnect(client);
     expect(spyClientDisconnect).toHaveBeenCalled();
     expect(spyClientDisconnect).toHaveBeenCalledTimes(1);
   });
@@ -156,7 +145,7 @@ describe('PostgreSQL Driver', () => {
         },
       };
     });
-    PostgresqlDriverTemplateMethods.connect({
+    PostgresqlDriver.connect({
       host: fakeHost,
       database: fakeDb,
       user: fakeUser,
@@ -164,14 +153,13 @@ describe('PostgreSQL Driver', () => {
       port: fakePort,
       max: fakeMax,
     });
-    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
+    const client = await PostgresqlDriver.getClientConnect();
     const spyClientQuery = jest.spyOn(client, 'query');
-    await PostgresqlDriverTemplateMethods.singleTransaction(
-      client,
-      faker.random.word(),
-      ['name', 'path'],
-    );
-    await PostgresqlDriverTemplateMethods.commit(client);
+    await PostgresqlDriver.singleTransaction(client, faker.random.word(), [
+      'name',
+      'path',
+    ]);
+    await PostgresqlDriver.commit(client);
     expect(spyClientQuery).toHaveBeenCalled();
     expect(spyClientQuery).toHaveBeenCalledTimes(3);
   });
@@ -195,7 +183,7 @@ describe('PostgreSQL Driver', () => {
         },
       };
     });
-    PostgresqlDriverTemplateMethods.connect({
+    PostgresqlDriver.connect({
       host: fakeHost,
       database: fakeDb,
       user: fakeUser,
@@ -203,19 +191,18 @@ describe('PostgreSQL Driver', () => {
       port: fakePort,
       max: fakeMax,
     });
-    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
+    const client = await PostgresqlDriver.getClientConnect();
     const spyClientQuery = jest.spyOn(client, 'query');
-    await PostgresqlDriverTemplateMethods.singleTransaction(
-      client,
-      faker.random.word(),
-      ['name', 'path'],
-    );
-    await PostgresqlDriverTemplateMethods.rollback(client);
+    await PostgresqlDriver.singleTransaction(client, faker.random.word(), [
+      'name',
+      'path',
+    ]);
+    await PostgresqlDriver.rollback(client);
     expect(spyClientQuery).toHaveBeenCalled();
     expect(spyClientQuery).toHaveBeenCalledTimes(3);
   });
 
   afterEach(() => {
-    PostgresqlDriverTemplateMethods.pool = undefined;
+    PostgresqlDriver.pool = undefined;
   });
 });

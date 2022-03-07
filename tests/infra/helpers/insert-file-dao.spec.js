@@ -10,11 +10,11 @@ const {
   INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   INSERT_FILE_DAO_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER_AS_DEPENDENCY,
   INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_COMMIT,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_ROLLBACK,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_GET_CLIENT_CONNECTION,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_SINGLE_TRANSACTION,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_CLIENT_DISCONNECT,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_COMMIT,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_ROLLBACK,
   INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR,
 } = require('./constants');
 
@@ -26,12 +26,12 @@ class MockClient {
 
 describe('InsertFile DAO', () => {
   it('Should return files model response', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create();
+    const { sut, databaseDriverSpy } = new SutFactory().create();
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.clientConnection = new MockClient();
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.clientConnection = new MockClient();
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -41,20 +41,16 @@ describe('InsertFile DAO', () => {
       originalname: fakeName,
       filename: fakePath,
     });
-    expect(databaseDriverTemplateMethodsSpy.clientCommit).toEqual(
-      new MockClient(),
-    );
-    expect(databaseDriverTemplateMethodsSpy.clientDisconnection).toEqual(
-      new MockClient(),
-    );
+    expect(databaseDriverSpy.clientCommit).toEqual(new MockClient());
+    expect(databaseDriverSpy.clientDisconnection).toEqual(new MockClient());
   });
 
   it('Should return PostgresqlDatabaseError if client is undefined', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create();
+    const { sut, databaseDriverSpy } = new SutFactory().create();
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -64,33 +60,31 @@ describe('InsertFile DAO', () => {
   });
 
   it('Should return null if single transaction throws error', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+    const { sut, databaseDriverSpy } = new SutFactory().create(
       INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.clientConnection = new MockClient();
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.clientConnection = new MockClient();
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
     };
     const response = await sut.insertSingleFile(['name', 'path']);
-    expect(databaseDriverTemplateMethodsSpy.clientRollback).toEqual(
-      new MockClient(),
-    );
+    expect(databaseDriverSpy.clientRollback).toEqual(new MockClient());
     expect(response).toBeNull();
   });
 
   it('Should throw ServerError if no dependency is provided', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+    const { sut, databaseDriverSpy } = new SutFactory().create(
       INSERT_FILE_DAO_WITH_NO_DEPENDENCY,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -100,13 +94,13 @@ describe('InsertFile DAO', () => {
   });
 
   it('Should throw ServerError if dependency is an empty object', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+    const { sut, databaseDriverSpy } = new SutFactory().create(
       INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -116,13 +110,13 @@ describe('InsertFile DAO', () => {
   });
 
   it('Should throw ServerError if file mapper is not provided as dependency', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+    const { sut, databaseDriverSpy } = new SutFactory().create(
       INSERT_FILE_DAO_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER_AS_DEPENDENCY,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -132,13 +126,13 @@ describe('InsertFile DAO', () => {
   });
 
   it('Should throw ServerError if file mapper has no map method', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
+    const { sut, databaseDriverSpy } = new SutFactory().create(
       INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -147,14 +141,14 @@ describe('InsertFile DAO', () => {
     await expect(promise).rejects.toThrow(new ServerError());
   });
 
-  it('Should throw ServerError if DatabaseDriverTemplateMethods has no getClientConnection method', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION,
+  it('Should throw ServerError if DatabaseDriver has no getClientConnection method', async () => {
+    const { sut, databaseDriverSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_GET_CLIENT_CONNECTION,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -163,14 +157,14 @@ describe('InsertFile DAO', () => {
     await expect(promise).rejects.toThrow(new ServerError());
   });
 
-  it('Should throw ServerError if DatabaseDriverTemplateMethods has no singleTransaction method', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION,
+  it('Should throw ServerError if DatabaseDriver has no singleTransaction method', async () => {
+    const { sut, databaseDriverSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_SINGLE_TRANSACTION,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -179,14 +173,14 @@ describe('InsertFile DAO', () => {
     await expect(promise).rejects.toThrow(new ServerError());
   });
 
-  it('Should throw ServerError if DatabaseDriverTemplateMethods has no clientDisconnect method', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT,
+  it('Should throw ServerError if DatabaseDriver has no clientDisconnect method', async () => {
+    const { sut, databaseDriverSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_CLIENT_DISCONNECT,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -195,14 +189,14 @@ describe('InsertFile DAO', () => {
     await expect(promise).rejects.toThrow(new ServerError());
   });
 
-  it('Should throw ServerError if DatabaseDriverTemplateMethods has no commit method', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_COMMIT,
+  it('Should throw ServerError if DatabaseDriver has no commit method', async () => {
+    const { sut, databaseDriverSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_COMMIT,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,
@@ -211,14 +205,14 @@ describe('InsertFile DAO', () => {
     await expect(promise).rejects.toThrow(new ServerError());
   });
 
-  it('Should throw ServerError if DatabaseDriverTemplateMethods has no rollback method', async () => {
-    const { sut, databaseDriverTemplateMethodsSpy } = new SutFactory().create(
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_ROLLBACK,
+  it('Should throw ServerError if DatabaseDriver has no rollback method', async () => {
+    const { sut, databaseDriverSpy } = new SutFactory().create(
+      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_ROLLBACK,
     );
     const fakeId = faker.datatype.uuid();
     const fakeName = `${faker.random.word()}.jpg`;
     const fakePath = `${faker.datatype.uuid()}.jpg`;
-    databaseDriverTemplateMethodsSpy.response = {
+    databaseDriverSpy.response = {
       id: fakeId,
       name: fakeName,
       path: fakePath,

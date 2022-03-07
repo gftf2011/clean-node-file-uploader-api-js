@@ -1,4 +1,4 @@
-module.exports = class DatabaseDriverTemplateMethodsSpy {
+module.exports = class DatabaseDriverSpy {
   async getClientConnect() {
     return this.clientConnection;
   }

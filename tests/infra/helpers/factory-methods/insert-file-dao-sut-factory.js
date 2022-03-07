@@ -7,11 +7,11 @@ const {
   INSERT_FILE_DAO_WITH_EMPTY_OBJECT_AS_DEPENDENCY,
   INSERT_FILE_DAO_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER_AS_DEPENDENCY,
   INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_COMMIT,
-  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_ROLLBACK,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_GET_CLIENT_CONNECTION,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_SINGLE_TRANSACTION,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_CLIENT_DISCONNECT,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_COMMIT,
+  INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_ROLLBACK,
   INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR,
 } = require('../constants');
 
@@ -20,13 +20,15 @@ module.exports = class SutFactory {
     this.dependencies = new DependenciesFactory().create();
 
     if (type === INSERT_FILE_DAO_SINGLE_TRANSACTION_SUT_THROWING_ERROR) {
-      this.dependencies.databaseDriverTemplateMethodsSpy.singleTransaction =
-        async (_client, _statement, _values) => {
-          return Promise.reject(new Error());
-        };
+      this.dependencies.databaseDriverSpy.singleTransaction = async (
+        _client,
+        _statement,
+        _values,
+      ) => {
+        return Promise.reject(new Error());
+      };
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper:
           this.dependencies.fileEntityToFileModelMapperSpy,
       });
@@ -39,80 +41,60 @@ module.exports = class SutFactory {
       INSERT_FILE_DAO_WITH_NO_FILE_ENTITY_TO_FILE_MODEL_MAPPER_AS_DEPENDENCY
     ) {
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
       });
     } else if (
       type ===
       INSERT_FILE_DAO_WITH_HAS_FILE_ENTITY_TO_FILE_MODEL_MAPPER_WITH_NO_MAP
     ) {
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper: {},
       });
     } else if (
-      type ===
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_GET_CLIENT_CONNECTION
+      type === INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_GET_CLIENT_CONNECTION
     ) {
-      this.dependencies.databaseDriverTemplateMethodsSpy.getClientConnect =
-        undefined;
+      this.dependencies.databaseDriverSpy.getClientConnect = undefined;
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper:
           this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else if (
-      type ===
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_SINGLE_TRANSACTION
+      type === INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_SINGLE_TRANSACTION
     ) {
-      this.dependencies.databaseDriverTemplateMethodsSpy.singleTransaction =
-        undefined;
+      this.dependencies.databaseDriverSpy.singleTransaction = undefined;
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper:
           this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else if (
-      type ===
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_CLIENT_DISCONNECT
+      type === INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_CLIENT_DISCONNECT
     ) {
-      this.dependencies.databaseDriverTemplateMethodsSpy.clientDisconnect =
-        undefined;
+      this.dependencies.databaseDriverSpy.clientDisconnect = undefined;
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper:
           this.dependencies.fileEntityToFileModelMapperSpy,
       });
-    } else if (
-      type ===
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_COMMIT
-    ) {
-      this.dependencies.databaseDriverTemplateMethodsSpy.commit = undefined;
+    } else if (type === INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_COMMIT) {
+      this.dependencies.databaseDriverSpy.commit = undefined;
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper:
           this.dependencies.fileEntityToFileModelMapperSpy,
       });
-    } else if (
-      type ===
-      INSERT_FILE_DAO_HAS_DATABASE_DRIVER_TEMPLATE_METHODS_WITH_NO_ROLLBACK
-    ) {
-      this.dependencies.databaseDriverTemplateMethodsSpy.rollback = undefined;
+    } else if (type === INSERT_FILE_DAO_HAS_DATABASE_DRIVER_WITH_NO_ROLLBACK) {
+      this.dependencies.databaseDriverSpy.rollback = undefined;
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper:
           this.dependencies.fileEntityToFileModelMapperSpy,
       });
     } else {
       this.sut = new InsertFileDAO({
-        databaseDriverTemplateMethods:
-          this.dependencies.databaseDriverTemplateMethodsSpy,
+        databaseDriver: this.dependencies.databaseDriverSpy,
         fileEntityToFileModelMapper:
           this.dependencies.fileEntityToFileModelMapperSpy,
       });

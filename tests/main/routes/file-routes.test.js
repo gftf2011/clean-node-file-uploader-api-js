@@ -6,7 +6,7 @@ const request = require('supertest');
 const app = require('../../../src/main/server');
 const routes = require('../../../src/main/config/routes');
 
-const PostgresqlDriverTemplateMethods = require('../../../src/infra/helpers/template-methods/postgresql-driver-template-methods');
+const PostgresqlDriver = require('../../../src/infra/helpers/postgresql-driver');
 
 require('../../../src/main/bootstrap');
 
@@ -16,7 +16,7 @@ const InvalidFileTypeError = require('../../../src/utils/errors/invalid-file-typ
 
 describe('File Routes', () => {
   beforeAll(async () => {
-    PostgresqlDriverTemplateMethods.connect(config);
+    PostgresqlDriver.connect(config);
     routes(app);
   });
 
@@ -129,14 +129,14 @@ describe('File Routes', () => {
   });
 
   afterEach(async () => {
-    const client = await PostgresqlDriverTemplateMethods.getClientConnect();
+    const client = await PostgresqlDriver.getClientConnect();
     await client.query('BEGIN');
     await client.query('DELETE FROM files RETURNING *', []);
     await client.query('COMMIT');
-    await PostgresqlDriverTemplateMethods.clientDisconnect(client);
+    await PostgresqlDriver.clientDisconnect(client);
   });
 
   afterAll(async () => {
-    await PostgresqlDriverTemplateMethods.disconnect();
+    await PostgresqlDriver.disconnect();
   });
 });

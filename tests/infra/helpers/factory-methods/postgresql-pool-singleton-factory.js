@@ -1,4 +1,4 @@
-const PostgresqlPoolSingleton = require('../../../../src/infra/helpers/template-methods/singleton/postgresql-pool-singleton');
+const PostgresqlPoolSingleton = require('../../../../src/infra/helpers/singleton/postgresql-pool-singleton');
 
 module.exports = class SutFactory {
   create(_type) {

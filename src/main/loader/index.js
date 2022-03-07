@@ -1,9 +1,9 @@
-const PostgresqlDriverTemplateMethods = require('../../infra/helpers/template-methods/postgresql-driver-template-methods');
+const PostgresqlDriver = require('../../infra/helpers/postgresql-driver');
 
 const configPostgresql = require('../config/postgresql');
 
 const loader = async () => {
-  PostgresqlDriverTemplateMethods.connect(configPostgresql);
+  PostgresqlDriver.connect(configPostgresql);
 };
 
 module.exports = loader;
