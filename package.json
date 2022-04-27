@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docs": "node docs/index.js",
     "create:temp": "mkdir temp || true",
     "create:upload": "mkdir temp/uploads || true",
     "delete:upload": "rm -rf temp/uploads || true",

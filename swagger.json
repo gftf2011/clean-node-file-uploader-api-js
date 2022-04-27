@@ -1,0 +1,171 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "clean-node-file-uploader-api-js",
+    "description": "",
+    "contact": {
+      "name": "Gabriel Ferrari Tarallo Ferraz",
+      "url": "https://www.linkedin.com/in/gabriel-ferrari-tarallo-ferraz-7a4218135/",
+      "email": "gftf2011@gmail.com"
+    },
+    "license": {
+      "name": "MIT license",
+      "url": "https://www.mit.edu/~amini/LICENSE.md"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "file",
+      "description": "routes and http path requests related to file upload"
+    }
+  ],
+  "paths": {
+    "/file": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Route to upload an image in the system",
+        "description": "For valid response try use a valid image mimetype like - (PNG, JPG, JPEG, GIF) - with less than 2Mb.",
+        "requestBody": {
+          "description": "File path needed to upload image",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/File"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "description": "HTTP status code"
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "file name"
+                        },
+                        "path": {
+                          "type": "string",
+                          "description": "file path"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "originalname": "teste.png",
+                      "filename": "babd52ac71b81ed2890ce232a0f1698e.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Type of error"
+                    }
+                  }
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "name": "MissingParamError"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Type of error"
+                    }
+                  }
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "name": "FileNotFoundError"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Type of error"
+                    }
+                  }
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "name": "ServerError"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "File": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      }
+    }
+  }
+}
