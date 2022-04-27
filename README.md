@@ -1,37 +1,118 @@
-# Clean Architecture
-
-The Clean Architecture, defined by Robert Cecil Martin (a.k.a. Uncle Bob) at 2012, is an architectural pattern to organize the directories in the project, aiming to build at a more robust, flexible and scalable software project. The main idea is to create a software more tolerable to changes facilitating new feature implementations in the future. To understand how it works we can break apart the architecture in a larger set named 'infrastructure' containing the tecnology used by the project, and a smaller inner set named 'domain', or 'core', that has the application's business rules.
-
-<br/>
-
 <div align="center">
-  <img height="400" src="https://github.com/gftf2011/clean-node-file-uploader-api-js/blob/main/public/assets/clean-arch-simplified.png" />
+	<h1>Clean Node File Uploader Api</h1>
+  <br/>
+  <img src="https://img.shields.io/github/languages/code-size/gftf2011/clean-node-file-uploader-api-js"/>
+  <img src="https://img.shields.io/github/repo-size/gftf2011/clean-node-file-uploader-api-js"/>
+  <img src="https://img.shields.io/github/license/gftf2011/clean-node-file-uploader-api-js"/>
+  <img src="https://img.shields.io/github/package-json/v/gftf2011/clean-node-file-uploader-api-js"/>
+  <img src="https://img.shields.io/github/last-commit/gftf2011/clean-node-file-uploader-api-js"/>
+  <img src="https://snyk.io/test/github/gftf2011/clean-node-file-uploader-api-js/badge.svg"/>
+  <img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103"/>
 </div>
 
 <br/>
 
-To implement the Clean Architecture is very important to know that the classes, functions and variables that exist in the inner set, should never know how the implementation of an external code that exists in the superior scope. To make sure this golden rule, that defines the Clean Architecture, is never broken, techniques such as the Dependency Inversion principle are used to decouple the project structure using contracts, or interfaces.
-A traditional representation of the Clean Architecture contains 4 layers, but this is not a rule. Depending on the project, more or less sets can be created.
-
-<br/>
-
 <div align="center">
-  <img height="400" src="https://github.com/gftf2011/clean-node-file-uploader-api-js/blob/main/public/assets/claen-arch-complete.png" />
+  <a href="#page_facing_up-about">About</a> •
+  <a href="#hammer_and_wrench-supported-os">Supported OS</a> • 
+  <a href="#large_blue_diamond-design-patterns">Design Patterns</a> •
+  <a href="#clipboard-required-tools">Required Tools</a> •
+  <a href="#racing_car-running-project">Running Project</a> •
+  <a href="#test_tube-running-tests">Running Tests</a> •
+  <a href="#file_cabinet-running-swagger">Running Swagger</a> •
+  <a href="#memo-license">License</a>
 </div>
 
 <br/>
 
-The Clean Architecture brings several benefits with it like:
- - Framework independency
- - Database independency
- - Highly Testable
+<div align="center">
+  <img src="https://github.com/gftf2011/clean-node-file-uploader-api-js/blob/main/public/assets/background.png" />
+</div>
 
 <br/>
 
-But, it has several counterpoints such:
- - Excessive usage and creation of new classes
- - Initial learning time is higher
+## :page_facing_up: About
+
+This is a file upload API developed in pure Vanilla Javascript.
+
+The objective from this project is to show how to create an API with a well-defined and decoupled architecture, using T.D.D. - (Test Driven Development) as a work methodology, building along with the Clean Architecture concept, dividing the layers responsibility !
 
 <br/>
 
-Normally, managing the code complexity leads to higher learning time, what leads to a higher finantial cost and lower productivity, but after a while the code complexity becomes managable and due to the architecture's nature of highly decoupled components the code maintenance becomes almost constant, what leads to a finantial resources decrease.
+## :hammer_and_wrench: Supported OS
+
+- [x] Mac OS
+- [x] Linux
+- [ ] Windows 
+
+<br/>
+
+## :large_blue_diamond: Design Patterns
+
+- Factory
+- Adapter
+- Composition Root
+- Builder
+- Singleton
+
+<br/>
+
+## :clipboard: Required Tools
+
+- [x] Node - [https://nodejs.org/](https://nodejs.org/)
+  - Node version: 16.x.x
+  - npm version: 8.x.x
+- [x] Yarn - [https://yarnpkg.com/](https://yarnpkg.com/)
+  - Yarn version: 1.22.5
+- [x] Snyk - [https://snyk.io/](https://snyk.io/)
+- [x] Husky - [https://typicode.github.io/](https://typicode.github.io/)
+- [x] Docker - [https://www.docker.com/](https://www.docker.com/)
+
+<br/>
+
+## :racing_car: Running Project
+
+1. Clone Repository
+```sh
+  $ git clone https://github.com/gftf2011/clean-node-file-uploader-api-js.git
+```
+2. Install dependencies
+```sh
+  ################################################################################
+  # YARN usage is recommended, or use the "npm install" to install dependencies. #
+  ################################################################################
+  $ yarn
+```
+3. Use command below to run development environment
+```sh
+  $ yarn docker:dev:run
+```
+
+### OBS.: Ensure to install all dependencies in <a href="#clipboard-required-tools">Required Tools</a>
+
+<br/>
+
+## :test_tube: Running Tests
+```sh
+  $ yarn docker:test:run
+```
+
+<br/>
+
+## :file_cabinet: Running Swagger
+
+1. Run command below
+```sh
+  $ yarn docs
+```
+2. Access the url - *localhost:3334/api-docs*
+
+<br/>
+
+## :memo: License
+
+This project is under MIT license. See the [LICENSE](https://github.com/gftf2011/clean-node-login-api-js/blob/main/LICENSE) file for more details.
+
+---
+
+Made with lots of :heart: by [Gabriel Ferrari Tarallo Ferraz](https://www.linkedin.com/in/gabriel-ferrari-tarallo-ferraz-7a4218135/)
