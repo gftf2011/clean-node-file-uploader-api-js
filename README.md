@@ -20,6 +20,7 @@
   <a href="#racing_car-running-project">Running Project</a> •
   <a href="#test_tube-running-tests">Running Tests</a> •
   <a href="#file_cabinet-running-swagger">Running Swagger</a> •
+  <a href="#bookmark-benchmark">Benchmark</a> •
   <a href="#memo-license">License</a>
 </div>
 
@@ -35,7 +36,7 @@
 
 This is a file upload API developed in pure Vanilla Javascript.
 
-The objective from this project is to show how to create an API with a well-defined and decoupled architecture, using T.D.D. - (Test Driven Development) as a work methodology, building along with the Clean Architecture concept, dividing the layers responsibility !
+The objective from this project is to show how to create an API with a well-defined and decoupled architecture, using T.D.D. - (Test Driven Development) as a work methodology, building along with the [Clean Architecture](https://github.com/gftf2011/clean-node-file-uploader-api-js/blob/main/CLEAN_ARCH.md) concept, dividing the layers responsibility !
 
 <br/>
 
@@ -95,6 +96,17 @@ The objective from this project is to show how to create an API with a well-defi
 ## :test_tube: Running Tests
 ```sh
   $ yarn docker:test:run
+  ######################################
+  # Uses Cucumber.JS to run BDD tests. #
+  ######################################
+  $ yarn test:cucumber
+```
+
+<br/>
+
+## :bookmark: Benchmark
+```sh
+  $ yarn docker:local:doctor:run
 ```
 
 <br/>
