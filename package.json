@@ -81,7 +81,7 @@
     "supertest": "^6.2.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.17.0",
+    "@babel/runtime": "^7.17.7",
     "cors": "^2.8.5",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
