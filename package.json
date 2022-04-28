@@ -1,7 +1,7 @@
 {
   "name": "clean-node-file-uploader-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "NodeJs Rest API using TDD, Clean Architecture and Design Patterns",
   "main": "index.js",
   "scripts": {
     "docs": "node docs/index.js",
