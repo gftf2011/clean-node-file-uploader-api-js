@@ -87,7 +87,7 @@
     "express": "^4.17.2",
     "fast-glob": "^3.2.11",
     "multer": "^1.4.4",
-    "pg": "^8.7.3",
+    "pg": "^8.8.0",
     "swagger-ui-express": "^4.3.0"
   },
   "resolutions": {
